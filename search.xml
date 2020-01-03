@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>testpictrue</title>
+    <url>/testpictrue/</url>
+    <content><![CDATA[<h2 id="测试图片功能是否正常"><a href="#测试图片功能是否正常" class="headerlink" title="测试图片功能是否正常"></a>测试图片功能是否正常</h2><p>这个是用来测试图片功能的文章</p>
+<p>现在我插入一个七牛云图片<img src="http://q3gm2b4jl.bkt.clouddn.com/png/2.png" alt="七牛云图片"></p>
+<p>文章内显示本地相对路径图片<img src="/testpictrue/joker.png" alt></p>
+<a id="more"></a>
+
+<p>测试一下是否正常</p>
+]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hahaxixihehe</title>
     <url>/hahaxixihehe/</url>
     <content><![CDATA[<p>kdjflskjdflkjsdlgk<br>sdgjskldgjlskdjgl<br>sdjglksjdlgkjsdl<br>djsklgjlskdjglk<br>sjdkgjslkdsldkgjl</p>
@@ -57,6 +74,37 @@
       </categories>
       <tags>
         <tag>哈哈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo3.9.0+next6.5.0个人博客</title>
+    <url>/haha/</url>
+    <content><![CDATA[<p>3.9.0+next6.5.0个人博客</p>
+<p>##################################</p>
+<p>基线环境准备：（本文基于环境，版本不一致配置会有变化）</p>
+<p>hexo 3.9.0 + node v12.14.0 +next 6.5.0  （next 7.4.0以上版本就必须要hexo 4.X才支持了！）</p>
+<p>###################################</p>
+<p><a href="https://github.com/sgalin/hexo-starter" target="_blank" rel="noopener">https://github.com/sgalin/hexo-starter</a>    hexo 3.9.0版本的相关文件的GitHub地址，这个模板要保存下来啊 太坑了！！！<br>下载下来之后 ，该目录没有hexo，清理缓存之后重新从package.json中安装依赖</p>
+<p>这是一个测试的url<a href="https://mr-jieyan.github.io">JieYan blogs</a></p>
+<p>这是一个强调符号修改配置文件<code>/etc/resolve.conf</code>  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ni shi yige <span class="string">"代码块"</span>   </span><br><span class="line">java -jar <span class="string">"service.jar"</span></span><br></pre></td></tr></table></figure>
+
+<p>前面这部分就是摘要了。</p>
+<a id="more"></a>
+
+<p>这是一个七牛云图片<img src="http://q3gm2b4jl.bkt.clouddn.com/png/1.png" alt="jenkns"></p>
+<p><del>hahaxixi</del></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">DIR=`dirname <span class="variable">$0</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate blog</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Push hexo code</span></span><br><span class="line">git add .</span><br><span class="line">current_date=`date <span class="string">"+%Y-%m-%d %H:%M:%S"</span>`</span><br><span class="line">git commit -m <span class="string">"Blog updated: <span class="variable">$current_date</span>"</span></span><br><span class="line"></span><br><span class="line">sleep 2</span><br><span class="line">git push </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"=====&gt;Finish!&lt;====="</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line">print(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>yaya</category>
+      </categories>
+      <tags>
+        <tag>xixi</tag>
       </tags>
   </entry>
 </search>
