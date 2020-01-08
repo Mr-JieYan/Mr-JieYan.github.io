@@ -1,56 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Yearning数据库审计平台</title>
-    <url>/Yearning%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%A1%E8%AE%A1%E5%B9%B3%E5%8F%B0/</url>
-    <content><![CDATA[<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><strong>部分开发有上正式库查询数据排查问题的需求，正式环境的数据库不太适合透露外网端口提供给开发用图形工具进行访问，用openvpn连到内网再用图形工具进行访问的话，又会导致vpn的证书管理困难（虽然vpn访问内网也做了安全组限制）开放了太多的权限给开发，造成安全隐患，所以打算采用Yearning数据库审计平台+ip白名单的方式解决此问题。</strong></p>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>Yearning 不依赖于任何第三方SQL审核工具作为审核引擎,内部已自己实现审核/回滚相关逻辑。<br>仅依赖Mysql数据库。<br><code>mysql版本必须5.7及以上版本</code>请事先自行安装完毕且<code>创建Yearning库,字符集应为UTF-8/UTF8mb4 (仅Yearning所需mysql版本)</code><br>Yearning日志仅输出error级别,没有日志即可认为无运行错误！<br>Yearning 基于1080p分辨率开发仅支持1080p及以上显示器访问<br>由于使用较多新的前端技术栈,请使用Chrome最新版本(不包括360等其他魔改版本)</p>
-<h4 id="安装msyql"><a href="#安装msyql" class="headerlink" title="安装msyql"></a>安装msyql</h4><p>下载yum源安装</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</span><br><span class="line">yum -y install mysql80-community-release-el7-3.noarch.rpm</span><br></pre></td></tr></table></figure>
+    <title>Hello World</title>
+    <url>/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 
-<p>启动对应版本的源，此处注释掉mysql8</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/yum.repos.d/mysql-community.repo    </span><br><span class="line">yum repolist all | grep mysql</span><br><span class="line">yum install mysql-community-server </span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">修改一下mysql的data目录</span><br><span class="line">```dsconfig</span><br><span class="line">vim /etc/my.cnf</span><br><span class="line">	datadir=/data/mysql</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>查看密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep -i password /var/log/mysqld.log</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>修改密码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p <span class="string">'pass'</span></span><br><span class="line">ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'pass'</span>;</span><br></pre></td></tr></table></figure>
-
-<p>在初始化之前要先创建Yearning库,字符集应为UTF-8/UTF8mb4</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span>  Yearning <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Yearning下载安装"><a href="#Yearning下载安装" class="headerlink" title="Yearning下载安装"></a>Yearning下载安装</h4><p><a href="https://guide.yearning.io/install.html" target="_blank" rel="noopener">官方参考文档</a>  </p>
-<p>Yearning-go提供二进制下载包<br>下载地址 <a href="https://github.com/cookieY/Yearning/releases" target="_blank" rel="noopener">https://github.com/cookieY/Yearning/releases</a><br>请选择最新版本 在Assets中选择 Yearning-x.x.x.linux-amd64.zip 包进行下载<br>如需进行代码修改或自己编译请移步至二次开发页面</p>
-<h4 id="Yearning-目录结构"><a href="#Yearning-目录结构" class="headerlink" title="Yearning 目录结构"></a>Yearning 目录结构</h4><p><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366699573.jpg" alt></p>
-<h5 id="1-填写配置文件"><a href="#1-填写配置文件" class="headerlink" title="1.填写配置文件"></a>1.填写配置文件</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat conf.toml</span><br><span class="line">[Mysql]</span><br><span class="line">Db = &quot;Yearning&quot;</span><br><span class="line">Host = &quot;127.0.0.1&quot;</span><br><span class="line">Port = &quot;3306&quot;</span><br><span class="line">Password = &quot;xxxx&quot;</span><br><span class="line">User = &quot;root&quot;</span><br><span class="line"></span><br><span class="line">[General]   #数据库加解密key，只可更改一次。</span><br><span class="line">SecretKey = &quot;dbcjqheupqjsuwsm&quot;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#####  关于SecretKey</span><br><span class="line"></span><br><span class="line">SecretKey是token/数据库密码加密/解密的salt。</span><br><span class="line">建议所有用户在初次安装Yearning之前将SecretKey更改(不更改将存在安全风险)</span><br><span class="line">格式: 大小写字母均可, 长度必须为16位</span><br><span class="line"></span><br><span class="line">特别注意:</span><br><span class="line">此key仅可在初次安装时更改!之后不可再次更改!如再次更改会导致之前已存放的数据源密码无法解密,最终导致无法获取相关数据源信息  </span><br><span class="line"></span><br><span class="line">#####  使用帮助</span><br></pre></td></tr></table></figure>
-
-<p>./Yearning -h</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![](https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366990306.jpg)</span><br><span class="line"></span><br><span class="line">#####  2.初始化数据结构</span><br></pre></td></tr></table></figure>
-
-<p>./Yearning -m</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![](http://q3gm2b4jl.bkt.clouddn.com/png/yearning3.png)</span><br><span class="line"></span><br><span class="line">``如果报错无法连接数据库，本地测试能连接，请检查Yearning库有没有创建``</span><br><span class="line">请务必在-s启动前首先执行-m 初始化操作！</span><br><span class="line">如要再次初始化，请先把yearning表删除，否则重复执行无效</span><br><span class="line"></span><br><span class="line">#####  3.启动服务</span><br><span class="line"></span><br><span class="line">&gt;  默认启动</span><br></pre></td></tr></table></figure>
-
-<p>./Yearning -s</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 参数启动</span><br></pre></td></tr></table></figure>
-
-<p>./Yearning -s -b “192.168.1.100” -p “8000”</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">打开浏览器 http://192.168.1.100:8000</span><br><span class="line">默认密码：admin/Yearning_admin</span><br><span class="line"></span><br><span class="line">##### 服务更新</span><br><span class="line"></span><br><span class="line">Yearning采用自动表结构同步 无需手动更新表结构。只需替换安装包即可</span><br><span class="line">但如遇 删除字段操作的变动需要执行以下命令。具体是否需要做此操作，请详见相应版本的更新公告(目前该情况只出现于2.1.0以下版本升级到2.1.0以上版本)</span><br></pre></td></tr></table></figure>
-
-<p>./Yearning -x</p>
-<pre><code>
-####  Yearning 接入LDAP
-![](http://q3gm2b4jl.bkt.clouddn.com/png/yearning1.png)
-
-![](http://q3gm2b4jl.bkt.clouddn.com/png/yearning2.png)</code></pre>]]></content>
-      <categories>
-        <category>DBA</category>
-      </categories>
-      <tags>
-        <tag>Yearning</tag>
-      </tags>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>CICD之Jenkins相关</title>
@@ -107,20 +73,1251 @@
       </tags>
   </entry>
   <entry>
-    <title>testpictrue</title>
-    <url>/testpictrue/</url>
-    <content><![CDATA[<h2 id="测试图片功能是否正常"><a href="#测试图片功能是否正常" class="headerlink" title="测试图片功能是否正常"></a>测试图片功能是否正常</h2><p>这个是用来测试图片功能的文章</p>
-<p>现在我插入一个七牛云图片<img src="http://q3gm2b4jl.bkt.clouddn.com/png/2.png" alt="七牛云图片"></p>
-<p>文章内显示本地相对路径图片<img src="/testpictrue/joker.png" alt></p>
-<a id="more"></a>
+    <title>Yearning数据库审计平台</title>
+    <url>/Yearning%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%A1%E8%AE%A1%E5%B9%B3%E5%8F%B0/</url>
+    <content><![CDATA[<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><strong>部分开发有上正式库查询数据排查问题的需求，正式环境的数据库不太适合透露外网端口提供给开发用图形工具进行访问，用openvpn连到内网再用图形工具进行访问的话，又会导致vpn的证书管理困难（虽然vpn访问内网也做了安全组限制）开放了太多的权限给开发，造成安全隐患，所以打算采用Yearning数据库审计平台+ip白名单的方式解决此问题。</strong></p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>Yearning 不依赖于任何第三方SQL审核工具作为审核引擎,内部已自己实现审核/回滚相关逻辑。<br>仅依赖Mysql数据库。<br><code>mysql版本必须5.7及以上版本</code>请事先自行安装完毕且<code>创建Yearning库,字符集应为UTF-8/UTF8mb4 (仅Yearning所需mysql版本)</code><br>Yearning日志仅输出error级别,没有日志即可认为无运行错误！<br>Yearning 基于1080p分辨率开发仅支持1080p及以上显示器访问<br>由于使用较多新的前端技术栈,请使用Chrome最新版本(不包括360等其他魔改版本)</p>
+<h4 id="安装msyql"><a href="#安装msyql" class="headerlink" title="安装msyql"></a>安装msyql</h4><ol>
+<li><p>下载yum源安装<br><code>wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</code><br><code>yum -y install mysql80-community-release-el7-3.noarch.rpm</code></p>
+</li>
+<li><p>启动对应版本的源，此处注释掉mysql8<br><code>vim /etc/yum.repos.d/mysql-community.repo</code><br><code>yum repolist all | grep mysql</code><br><code>yum install mysql-community-server</code></p>
+</li>
+<li><p>修改一下mysql的data目录<br><code>vim /etc/my.cnf</code><br> <code>datadir=/data/mysql</code><br><code>systemctl start mysqld</code></p>
+</li>
+<li><p>查看密码<br><code>grep -i password /var/log/mysqld.log</code></p>
+</li>
+<li><p>修改密码<br><code>mysql -uroot -p &#39;pass&#39;</code><br><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;pass&#39;;</code></p>
+</li>
+<li><p>在初始化之前要先创建Yearning库,字符集应为UTF-8/UTF8mb4<br><code>CREATE DATABASE  Yearning DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></p>
+</li>
+</ol>
+<h4 id="Yearning下载安装"><a href="#Yearning下载安装" class="headerlink" title="Yearning下载安装"></a>Yearning下载安装</h4><p><a href="https://guide.yearning.io/install.html" target="_blank" rel="noopener">官方参考文档</a>  </p>
+<p>Yearning-go提供二进制下载包<br>下载地址 <a href="https://github.com/cookieY/Yearning/releases" target="_blank" rel="noopener">https://github.com/cookieY/Yearning/releases</a><br>请选择最新版本 在Assets中选择 Yearning-x.x.x.linux-amd64.zip 包进行下载<br>如需进行代码修改或自己编译请移步至二次开发页面</p>
+<h4 id="Yearning-目录结构"><a href="#Yearning-目录结构" class="headerlink" title="Yearning 目录结构"></a>Yearning 目录结构</h4><p><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366699573.jpg" alt></p>
+<h4 id="1-填写配置文件"><a href="#1-填写配置文件" class="headerlink" title="1.填写配置文件"></a>1.填写配置文件</h4><p><code>cat conf.toml</code></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[Mysql]</span></span><br><span class="line"><span class="string">Db</span> <span class="string">=</span> <span class="string">"Yearning"</span></span><br><span class="line"><span class="string">Host</span> <span class="string">=</span> <span class="string">"127.0.0.1"</span></span><br><span class="line"><span class="string">Port</span> <span class="string">=</span> <span class="string">"3306"</span></span><br><span class="line"><span class="string">Password</span> <span class="string">=</span> <span class="string">"xxxx"</span></span><br><span class="line"><span class="string">User</span> <span class="string">=</span> <span class="string">"root"</span></span><br><span class="line"></span><br><span class="line"><span class="string">[General]</span>   <span class="comment">#数据库加解密key，只可更改一次。</span></span><br><span class="line"><span class="string">SecretKey</span> <span class="string">=</span> <span class="string">"dbcjqheupqjsuwsm"</span></span><br></pre></td></tr></table></figure>
 
-<p>测试一下是否正常</p>
+<h4 id="关于SecretKey"><a href="#关于SecretKey" class="headerlink" title="关于SecretKey"></a>关于SecretKey</h4><p>SecretKey是token/数据库密码加密/解密的salt。<br>建议所有用户在初次安装Yearning之前将SecretKey更改(不更改将存在安全风险)<br>格式: 大小写字母均可, 长度必须为16位<br>特别注意:<br>此key仅可在初次安装时更改!之后不可再次更改!如再次更改会导致之前已存放的数据源密码无法解密,最终导致无法获取相关数据源信息  </p>
+<h4 id="使用帮助"><a href="#使用帮助" class="headerlink" title="使用帮助"></a>使用帮助</h4><p><code>./Yearning -h</code><br><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366990306.jpg" alt></p>
+<h4 id="2-初始化数据结构"><a href="#2-初始化数据结构" class="headerlink" title="2.初始化数据结构"></a>2.初始化数据结构</h4><p><code>./Yearning -m</code><br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning3.png" alt><br><code>如果报错无法连接数据库，本地测试能连接，请检查Yearning库有没有创建</code><br>请务必在-s启动前首先执行-m 初始化操作！<br>如要再次初始化，请先把yearning表删除，否则重复执行无效</p>
+<h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3.启动服务"></a>3.启动服务</h4><blockquote>
+<p>默认启动<br><code>./Yearning -s</code><br>参数启动<br><code>./Yearning -s -b &quot;192.168.1.100&quot; -p &quot;8000&quot;</code><br>打开浏览器 <a href="http://192.168.1.100:8000" target="_blank" rel="noopener">http://192.168.1.100:8000</a><br>默认密码：admin/Yearning_admin</p>
+</blockquote>
+<h4 id="服务更新"><a href="#服务更新" class="headerlink" title="服务更新"></a>服务更新</h4><p>Yearning采用自动表结构同步 无需手动更新表结构。只需替换安装包即可<br>但如遇 删除字段操作的变动需要执行以下命令。具体是否需要做此操作，请详见相应版本的更新公告(目前该情况只出现于2.1.0以下版本升级到2.1.0以上版本)</p>
+<h4 id="Yearning-接入LDAP"><a href="#Yearning-接入LDAP" class="headerlink" title="Yearning 接入LDAP"></a>Yearning 接入LDAP</h4><p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning1.png" alt></p>
+<p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning2.png" alt></p>
 ]]></content>
       <categories>
-        <category>test</category>
+        <category>DBA</category>
       </categories>
       <tags>
-        <tag>test</tag>
+        <tag>Yearning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo highlight</title>
+    <url>/hexo%20highlight/</url>
+    <content><![CDATA[<h4 id="代码块几种方式"><a href="#代码块几种方式" class="headerlink" title="代码块几种方式"></a>代码块几种方式</h4><p><a href="https://hexo.io/zh-cn/docs/writing" target="_blank" rel="noopener">hexo markdown 语法参考</a><br><a href="https://blog.csdn.net/zhuzhuyule/article/details/58347687" target="_blank" rel="noopener">Hexo下的Markdown语法(GFM)写博客</a><br><a href="https://52heartz.top/articles/markdown-code-inside-quotation/" target="_blank" rel="noopener">Markdown 引用中嵌套代码块</a><br>开始三个`前面必须有空行，最后三个`后面必须有空行。这些有注意么？</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alert(&apos;Hello World!&apos;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span>  Yearning <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">COLLATE</span> utf8mb4_unicode_ci;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">code snippet</span><br></pre></td></tr></table></figure>
+
+<h1 id="Highlight-js"><a href="#Highlight-js" class="headerlink" title="Highlight.js"></a>Highlight.js</h1><p><a href="https://travis-ci.org/highlightjs/highlight.js" target="_blank" rel="noopener"><img src="https://travis-ci.org/highlightjs/highlight.js.svg?branch=master" alt="Build Status"></a> <a href="https://greenkeeper.io/" target="_blank" rel="noopener"><img src="https://badges.greenkeeper.io/highlightjs/highlight.js.svg" alt="Greenkeeper badge"></a></p>
+<p>Highlight.js is a syntax highlighter written in JavaScript. It works in<br>the browser as well as on the server. It works with pretty much any<br>markup, doesn’t depend on any framework, and has automatic language<br>detection.</p>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>The bare minimum for using highlight.js on a web page is linking to the<br>library along with one of the styles and calling<br><a href="http://highlightjs.readthedocs.io/en/latest/api.html#inithighlightingonload" target="_blank" rel="noopener"><code>initHighlightingOnLoad</code></a>:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/path/to/styles/default.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/path/to/highlight.pack.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>hljs.initHighlightingOnLoad();<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>This will find and highlight code inside of <code>&lt;pre&gt;&lt;code&gt;</code> tags; it tries<br>to detect the language automatically. If automatic detection doesn’t<br>work for you, you can specify the language in the <code>class</code> attribute:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span> <span class="attr">class</span>=<span class="string">"html"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Classes may also be prefixed with either <code>language-</code> or <code>lang-</code>.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span> <span class="attr">class</span>=<span class="string">"language-html"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Plaintext-and-Disabling-Highlighting"><a href="#Plaintext-and-Disabling-Highlighting" class="headerlink" title="Plaintext and Disabling Highlighting"></a>Plaintext and Disabling Highlighting</h3><p>To style arbitrary text like code, but without any highlighting, use the<br><code>plaintext</code> class:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span> <span class="attr">class</span>=<span class="string">"plaintext"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>To disable highlighting of a tag completely, use the <code>nohighlight</code> class:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">pre</span>&gt;</span><span class="tag">&lt;<span class="name">code</span> <span class="attr">class</span>=<span class="string">"nohighlight"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">code</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Supported-Languages"><a href="#Supported-Languages" class="headerlink" title="Supported Languages"></a>Supported Languages</h3><p>The table below shows the full list of supported languages (and corresponding classes) that are bundled with the library.  Note: Which languages are available may depend on how you’ve built or included the library in your app. See <a href="#getting-the-library">Getting the Library</a> below.</p>
+<details>
+<summary>Reveal the full list of languages...</summary>
+
+<table>
+<thead>
+<tr>
+<th align="left">Language</th>
+<th align="left">Classes</th>
+<th align="left">Package</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1C</td>
+<td align="left">1c</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ABNF</td>
+<td align="left">abnf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Access logs</td>
+<td align="left">accesslog</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Ada</td>
+<td align="left">ada</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ARM assembler</td>
+<td align="left">armasm, arm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AVR assembler</td>
+<td align="left">avrasm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">ActionScript</td>
+<td align="left">actionscript, as</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Alan</td>
+<td align="left">alan, i</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-alan" target="_blank" rel="noopener">highlightjs-alan</a></td>
+</tr>
+<tr>
+<td align="left">AngelScript</td>
+<td align="left">angelscript, asc</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Apache</td>
+<td align="left">apache, apacheconf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AppleScript</td>
+<td align="left">applescript, osascript</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Arcade</td>
+<td align="left">arcade</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AsciiDoc</td>
+<td align="left">asciidoc, adoc</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AspectJ</td>
+<td align="left">aspectj</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AutoHotkey</td>
+<td align="left">autohotkey</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">AutoIt</td>
+<td align="left">autoit</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Awk</td>
+<td align="left">awk, mawk, nawk, gawk</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Axapta</td>
+<td align="left">axapta</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Bash</td>
+<td align="left">bash, sh, zsh</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Basic</td>
+<td align="left">basic</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">BNF</td>
+<td align="left">bnf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Brainfuck</td>
+<td align="left">brainfuck, bf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">C#</td>
+<td align="left">cs, csharp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">C++</td>
+<td align="left">cpp, c, cc, h, c++, h++, hpp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">C/AL</td>
+<td align="left">cal</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Cache Object Script</td>
+<td align="left">cos, cls</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CMake</td>
+<td align="left">cmake, cmake.in</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Coq</td>
+<td align="left">coq</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CSP</td>
+<td align="left">csp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CSS</td>
+<td align="left">css</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Cap’n Proto</td>
+<td align="left">capnproto, capnp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Clojure</td>
+<td align="left">clojure, clj</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">CoffeeScript</td>
+<td align="left">coffeescript, coffee, cson, iced</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Crmsh</td>
+<td align="left">crmsh, crm, pcmk</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Crystal</td>
+<td align="left">crystal, cr</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Cypher (Neo4j)</td>
+<td align="left">cypher</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-cypher" target="_blank" rel="noopener">highlightjs-cypher</a></td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="left">d</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">DNS Zone file</td>
+<td align="left">dns, zone, bind</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">DOS</td>
+<td align="left">dos, bat, cmd</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Dart</td>
+<td align="left">dart</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Delphi</td>
+<td align="left">delphi, dpr, dfm, pas, pascal, freepascal, lazarus, lpr, lfm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Diff</td>
+<td align="left">diff, patch</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Django</td>
+<td align="left">django, jinja</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Dockerfile</td>
+<td align="left">dockerfile, docker</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">dsconfig</td>
+<td align="left">dsconfig</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">DTS (Device Tree)</td>
+<td align="left">dts</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Dust</td>
+<td align="left">dust, dst</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Dylan</td>
+<td align="left">dylan</td>
+<td align="left"><a href="https://github.com/highlightjs/highlight-dylan" target="_blank" rel="noopener">highlight-dylan</a></td>
+</tr>
+<tr>
+<td align="left">EBNF</td>
+<td align="left">ebnf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Elixir</td>
+<td align="left">elixir</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Elm</td>
+<td align="left">elm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Erlang</td>
+<td align="left">erlang, erl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Excel</td>
+<td align="left">excel, xls, xlsx</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Extempore</td>
+<td align="left">extempore, xtlang, xtm</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-xtlang" target="_blank" rel="noopener">highlightjs-xtlang</a></td>
+</tr>
+<tr>
+<td align="left">F#</td>
+<td align="left">fsharp, fs</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">FIX</td>
+<td align="left">fix</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Fortran</td>
+<td align="left">fortran, f90, f95</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">G-Code</td>
+<td align="left">gcode, nc</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Gams</td>
+<td align="left">gams, gms</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">GAUSS</td>
+<td align="left">gauss, gss</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">GDScript</td>
+<td align="left">godot, gdscript</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-gdscript" target="_blank" rel="noopener">highlightjs-gdscript</a></td>
+</tr>
+<tr>
+<td align="left">Gherkin</td>
+<td align="left">gherkin</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">GN for Ninja</td>
+<td align="left">gn, gni</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-GN/blob/master/gn.js" target="_blank" rel="noopener">highlightjs-GN</a></td>
+</tr>
+<tr>
+<td align="left">Go</td>
+<td align="left">go, golang</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Golo</td>
+<td align="left">golo, gololang</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Gradle</td>
+<td align="left">gradle</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Groovy</td>
+<td align="left">groovy</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">HTML, XML</td>
+<td align="left">xml, html, xhtml, rss, atom, xjb, xsd, xsl, plist, svg</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">HTTP</td>
+<td align="left">http, https</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Haml</td>
+<td align="left">haml</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Handlebars</td>
+<td align="left">handlebars, hbs, html.hbs, html.handlebars</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Haskell</td>
+<td align="left">haskell, hs</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Haxe</td>
+<td align="left">haxe, hx</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Hy</td>
+<td align="left">hy, hylang</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Ini, TOML</td>
+<td align="left">ini, toml</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Inform7</td>
+<td align="left">inform7, i7</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">IRPF90</td>
+<td align="left">irpf90</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">JSON</td>
+<td align="left">json</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Java</td>
+<td align="left">java, jsp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">JavaScript</td>
+<td align="left">javascript, js, jsx</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Kotlin</td>
+<td align="left">kotlin, kt</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Leaf</td>
+<td align="left">leaf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Lasso</td>
+<td align="left">lasso, ls, lassoscript</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Less</td>
+<td align="left">less</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">LDIF</td>
+<td align="left">ldif</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Lisp</td>
+<td align="left">lisp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">LiveCode Server</td>
+<td align="left">livecodeserver</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">LiveScript</td>
+<td align="left">livescript, ls</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Lua</td>
+<td align="left">lua</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Makefile</td>
+<td align="left">makefile, mk, mak</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Markdown</td>
+<td align="left">markdown, md, mkdown, mkd</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Mathematica</td>
+<td align="left">mathematica, mma, wl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Matlab</td>
+<td align="left">matlab</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Maxima</td>
+<td align="left">maxima</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Maya Embedded Language</td>
+<td align="left">mel</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Mercury</td>
+<td align="left">mercury</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">mIRC Scripting Language</td>
+<td align="left">mirc, mrc</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-mirc" target="_blank" rel="noopener">highlightjs-mirc</a></td>
+</tr>
+<tr>
+<td align="left">Mizar</td>
+<td align="left">mizar</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Mojolicious</td>
+<td align="left">mojolicious</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Monkey</td>
+<td align="left">monkey</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Moonscript</td>
+<td align="left">moonscript, moon</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">N1QL</td>
+<td align="left">n1ql</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">NSIS</td>
+<td align="left">nsis</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Nginx</td>
+<td align="left">nginx, nginxconf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Nimrod</td>
+<td align="left">nimrod, nim</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Nix</td>
+<td align="left">nix</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">OCaml</td>
+<td align="left">ocaml, ml</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Objective C</td>
+<td align="left">objectivec, mm, objc, obj-c</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">OpenGL Shading Language</td>
+<td align="left">glsl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">OpenSCAD</td>
+<td align="left">openscad, scad</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Oracle Rules Language</td>
+<td align="left">ruleslanguage</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Oxygene</td>
+<td align="left">oxygene</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">PF</td>
+<td align="left">pf, pf.conf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">PHP</td>
+<td align="left">php, php3, php4, php5, php6</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Parser3</td>
+<td align="left">parser3</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Perl</td>
+<td align="left">perl, pl, pm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Plaintext: no highlight</td>
+<td align="left">plaintext</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Pony</td>
+<td align="left">pony</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">PostgreSQL &amp; PL/pgSQL</td>
+<td align="left">pgsql, postgres, postgresql</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">PowerShell</td>
+<td align="left">powershell, ps, ps1</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Processing</td>
+<td align="left">processing</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Prolog</td>
+<td align="left">prolog</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Properties</td>
+<td align="left">properties</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Protocol Buffers</td>
+<td align="left">protobuf</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Puppet</td>
+<td align="left">puppet, pp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Python</td>
+<td align="left">python, py, gyp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Python profiler results</td>
+<td align="left">profile</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Q</td>
+<td align="left">k, kdb</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">QML</td>
+<td align="left">qml</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">R</td>
+<td align="left">r</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Razor CSHTML</td>
+<td align="left">cshtml, razor, razor-cshtml</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-cshtml-razor" target="_blank" rel="noopener">highlightjs-cshtml-razor</a></td>
+</tr>
+<tr>
+<td align="left">ReasonML</td>
+<td align="left">reasonml, re</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">RenderMan RIB</td>
+<td align="left">rib</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">RenderMan RSL</td>
+<td align="left">rsl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Roboconf</td>
+<td align="left">graph, instances</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Robot Framework</td>
+<td align="left">robot, rf</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-robot" target="_blank" rel="noopener">highlightjs-robot</a></td>
+</tr>
+<tr>
+<td align="left">RPM spec files</td>
+<td align="left">rpm-specfile, rpm, spec, rpm-spec, specfile</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-rpm-specfile" target="_blank" rel="noopener">highlightjs-rpm-specfile</a></td>
+</tr>
+<tr>
+<td align="left">Ruby</td>
+<td align="left">ruby, rb, gemspec, podspec, thor, irb</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Rust</td>
+<td align="left">rust, rs</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">SAS</td>
+<td align="left">SAS, sas</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">SCSS</td>
+<td align="left">scss</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">SQL</td>
+<td align="left">sql</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">STEP Part 21</td>
+<td align="left">p21, step, stp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Scala</td>
+<td align="left">scala</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Scheme</td>
+<td align="left">scheme</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Scilab</td>
+<td align="left">scilab, sci</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Shape Expressions</td>
+<td align="left">shexc</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-shexc" target="_blank" rel="noopener">highlightjs-shexc</a></td>
+</tr>
+<tr>
+<td align="left">Shell</td>
+<td align="left">shell, console</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Smali</td>
+<td align="left">smali</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Smalltalk</td>
+<td align="left">smalltalk, st</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Solidity</td>
+<td align="left">solidity, sol</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-solidity" target="_blank" rel="noopener">highlightjs-solidity</a></td>
+</tr>
+<tr>
+<td align="left">Stan</td>
+<td align="left">stan</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Stata</td>
+<td align="left">stata</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Structured Text</td>
+<td align="left">iecst, scl, stl, structured-text</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-structured-text" target="_blank" rel="noopener">highlightjs-structured-text</a></td>
+</tr>
+<tr>
+<td align="left">Stylus</td>
+<td align="left">stylus, styl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">SubUnit</td>
+<td align="left">subunit</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Supercollider</td>
+<td align="left">supercollider, sc</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-supercollider" target="_blank" rel="noopener">highlightjs-supercollider</a></td>
+</tr>
+<tr>
+<td align="left">Swift</td>
+<td align="left">swift</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Tcl</td>
+<td align="left">tcl, tk</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Terraform (HCL)</td>
+<td align="left">terraform, tf, hcl</td>
+<td align="left"><a href="https://github.com/highlightjs/highlightjs-terraform" target="_blank" rel="noopener">highlightjs-terraform</a></td>
+</tr>
+<tr>
+<td align="left">Test Anything Protocol</td>
+<td align="left">tap</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">TeX</td>
+<td align="left">tex</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Thrift</td>
+<td align="left">thrift</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">TP</td>
+<td align="left">tp</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Twig</td>
+<td align="left">twig, craftcms</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">TypeScript</td>
+<td align="left">typescript, ts</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">VB.Net</td>
+<td align="left">vbnet, vb</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">VBScript</td>
+<td align="left">vbscript, vbs</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">VHDL</td>
+<td align="left">vhdl</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Vala</td>
+<td align="left">vala</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Verilog</td>
+<td align="left">verilog, v</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Vim Script</td>
+<td align="left">vim</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">x86 Assembly</td>
+<td align="left">x86asm</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">XL</td>
+<td align="left">xl, tao</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">XQuery</td>
+<td align="left">xquery, xpath, xq</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">YAML</td>
+<td align="left">yml, yaml</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Zephir</td>
+<td align="left">zephir, zep</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>Languages with the specified package name are defined in separate repositories<br>and not included in <code>highlight.pack.js</code>.</p>
+</details>
+
+
+<h2 id="Custom-Initialization"><a href="#Custom-Initialization" class="headerlink" title="Custom Initialization"></a>Custom Initialization</h2><p>When you need a bit more control over the initialization of<br>highlight.js, you can use the <a href="http://highlightjs.readthedocs.io/en/latest/api.html#highlightblock-block" target="_blank" rel="noopener"><code>highlightBlock</code></a> and <a href="http://highlightjs.readthedocs.io/en/latest/api.html#configure-options" target="_blank" rel="noopener"><code>configure</code></a><br>functions. This allows you to control <em>what</em> to highlight and <em>when</em>.</p>
+<p>Here’s an equivalent way to calling <a href="http://highlightjs.readthedocs.io/en/latest/api.html#inithighlightingonload" target="_blank" rel="noopener"><code>initHighlightingOnLoad</code></a> using<br>vanilla JS:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'DOMContentLoaded'</span>, (event) =&gt; &#123;</span><br><span class="line">  <span class="built_in">document</span>.querySelectorAll(<span class="string">'pre code'</span>).forEach(<span class="function">(<span class="params">block</span>) =&gt;</span> &#123;</span><br><span class="line">    hljs.highlightBlock(block);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>You can use any tags instead of <code>&lt;pre&gt;&lt;code&gt;</code> to mark up your code. If<br>you don’t use a container that preserves line breaks you will need to<br>configure highlight.js to use the <code>&lt;br&gt;</code> tag:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hljs.configure(&#123;<span class="attr">useBR</span>: <span class="literal">true</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'div.code'</span>).forEach(<span class="function">(<span class="params">block</span>) =&gt;</span> &#123;</span><br><span class="line">  hljs.highlightBlock(block);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>For other options refer to the documentation for <a href="http://highlightjs.readthedocs.io/en/latest/api.html#configure-options" target="_blank" rel="noopener"><code>configure</code></a>.</p>
+<h2 id="Web-Workers"><a href="#Web-Workers" class="headerlink" title="Web Workers"></a>Web Workers</h2><p>You can run highlighting inside a web worker to avoid freezing the browser<br>window while dealing with very big chunks of code.</p>
+<p>In your main script:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">addEventListener(<span class="string">'load'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> code = <span class="built_in">document</span>.querySelector(<span class="string">'#code'</span>);</span><br><span class="line">  <span class="keyword">const</span> worker = <span class="keyword">new</span> Worker(<span class="string">'worker.js'</span>);</span><br><span class="line">  worker.onmessage = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123; code.innerHTML = event.data; &#125;</span><br><span class="line">  worker.postMessage(code.textContent);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>In worker.js:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">onmessage = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  importScripts(<span class="string">'&lt;path&gt;/highlight.pack.js'</span>);</span><br><span class="line">  <span class="keyword">const</span> result = self.hljs.highlightAuto(event.data);</span><br><span class="line">  postMessage(result.value);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>You can use highlight.js with node to highlight content before sending it to the browser.<br>Make sure to use the <code>.value</code> property to get the formatted html.<br>For more info about the returned object refer to the api docs <a href="https://highlightjs.readthedocs.io/en/latest/api.html" target="_blank" rel="noopener">https://highlightjs.readthedocs.io/en/latest/api.html</a></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// require the highlight.js library including all languages</span></span><br><span class="line"><span class="keyword">const</span> hljs = <span class="built_in">require</span>(<span class="string">'./highlight.js'</span>);</span><br><span class="line"><span class="keyword">const</span> highlightedCode = hljs.highlightAuto(<span class="string">'&lt;span&gt;Hello World!&lt;/span&gt;'</span>).value</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// require the highlight.js library without languages</span></span><br><span class="line"><span class="keyword">const</span> hljs = <span class="built_in">require</span>(<span class="string">"highlight.js/lib/highlight.js"</span>);</span><br><span class="line"><span class="comment">// separately require languages</span></span><br><span class="line">hljs.registerLanguage(<span class="string">'html'</span>, <span class="built_in">require</span>(<span class="string">'highlight.js/lib/languages/html'</span>));</span><br><span class="line">hljs.registerLanguage(<span class="string">'sql'</span>, <span class="built_in">require</span>(<span class="string">'highlight.js/lib/languages/sql'</span>));</span><br><span class="line"><span class="comment">// highlight with providing the language</span></span><br><span class="line"><span class="keyword">const</span> highlightedCode = hljs.highlight(<span class="string">'html'</span>, <span class="string">'&lt;span&gt;Hello World!&lt;/span&gt;'</span>).value</span><br></pre></td></tr></table></figure>
+
+<h2 id="Getting-the-Library"><a href="#Getting-the-Library" class="headerlink" title="Getting the Library"></a>Getting the Library</h2><p>You can get highlight.js as a hosted, or custom-build, browser script or<br>as a server module. Right out of the box the browser script supports<br>both AMD and CommonJS, so if you wish you can use RequireJS or<br>Browserify without having to build from source. The server module also<br>works perfectly fine with Browserify, but there is the option to use a<br>build specific to browsers rather than something meant for a server.<br>Head over to the <a href="https://highlightjs.org/download/" target="_blank" rel="noopener">download page</a> for all the options.</p>
+<p><strong>Don’t link to GitHub directly.</strong> The library is not supposed to work straight<br>from the source, it requires building. If none of the pre-packaged options<br>work for you refer to the <a href="http://highlightjs.readthedocs.io/en/latest/building-testing.html" target="_blank" rel="noopener">building documentation</a>.</p>
+<p><strong>The CDN-hosted package doesn’t have all the languages.</strong> Otherwise it’d be<br>too big. If you don’t see the language you need in the <a href="https://highlightjs.org/download/" target="_blank" rel="noopener">“Common” section</a>,<br>it can be added manually:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span></span></span><br><span class="line"><span class="tag"> <span class="attr">charset</span>=<span class="string">"UTF-8"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">src</span>=<span class="string">"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/languages/go.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>On Almond.</strong> You need to use the optimizer to give the module a name. For<br>example:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r.js -o name=hljs paths.hljs=/path/to/highlight out=highlight.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h3><p>You can import Highlight.js as a CommonJS-module:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install highlight.js --save</span><br></pre></td></tr></table></figure>
+
+<p>In your application:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hljs <span class="keyword">from</span> <span class="string">'highlight.js'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>The default import imports all languages! Therefore it is likely to be more efficient to import only the library and the languages you need:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hljs <span class="keyword">from</span> <span class="string">'highlight.js/lib/highlight'</span>;</span><br><span class="line"><span class="keyword">import</span> javascript <span class="keyword">from</span> <span class="string">'highlight.js/lib/languages/javascript'</span>;</span><br><span class="line">hljs.registerLanguage(<span class="string">'javascript'</span>, javascript);</span><br></pre></td></tr></table></figure>
+
+<p>To set the syntax highlighting style, if your build tool processes CSS from your JavaScript entry point, you can import the stylesheet directly into your CommonJS-module:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hljs <span class="keyword">from</span> <span class="string">'highlight.js/lib/highlight'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'highlight.js/styles/github.css'</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Highlight.js is released under the BSD License. See <a href="https://github.com/highlightjs/highlight.js/blob/master/LICENSE" target="_blank" rel="noopener">LICENSE</a> file<br>for details.</p>
+<h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p>The official site for the library is at <a href="https://highlightjs.org/" target="_blank" rel="noopener">https://highlightjs.org/</a>.</p>
+<p>Further in-depth documentation for the API and other topics is at<br><a href="http://highlightjs.readthedocs.io/" target="_blank" rel="noopener">http://highlightjs.readthedocs.io/</a>.</p>
+<p>Authors and contributors are listed in the <a href="https://github.com/highlightjs/highlight.js/blob/master/AUTHORS.en.txt" target="_blank" rel="noopener">AUTHORS.en.txt</a> file.</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>highlight</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo util</title>
+    <url>/hexo%20util/</url>
+    <content><![CDATA[<h1 id="hexo-util"><a href="#hexo-util" class="headerlink" title="hexo-util"></a>hexo-util</h1><p><a href="https://travis-ci.org/hexojs/hexo-util" target="_blank" rel="noopener"><img src="https://travis-ci.org/hexojs/hexo-util.svg?branch=master" alt="Build Status"></a>  <a href="http://badge.fury.io/js/hexo-util" target="_blank" rel="noopener"><img src="https://badge.fury.io/js/hexo-util.svg" alt="NPM version"></a> <a href="https://coveralls.io/github/hexojs/hexo-util?branch=master" target="_blank" rel="noopener"><img src="https://coveralls.io/repos/hexojs/hexo-util/badge.svg?branch=master&service=github" alt="Coverage Status"></a></p>
+<p>Utilities for <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>.</p>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-util --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'hexo-util'</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="CacheStream"><a href="#CacheStream" class="headerlink" title="CacheStream()"></a>CacheStream()</h3><p>Caches contents piped to the stream.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> stream = <span class="keyword">new</span> CacheStream();</span><br><span class="line"></span><br><span class="line">fs.createReadStream(<span class="string">'/path/to/file'</span>).pipe(stream);</span><br><span class="line"></span><br><span class="line">stream.on(<span class="string">'finish'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">// Read cache piped to the stream</span></span><br><span class="line">  <span class="built_in">console</span>.log(stream.getCache());</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Destroy cache</span></span><br><span class="line">  stream.destroy();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="camelCaseKeys-obj-options"><a href="#camelCaseKeys-obj-options" class="headerlink" title="camelCaseKeys(obj, options)"></a>camelCaseKeys(obj, options)</h3><p>Convert object keys to camelCase. Original keys will be converted to getter/setter and sync to the camelCase keys.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">camelCaseKeys(&#123;</span><br><span class="line">  foo_bar: <span class="string">'test'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &#123; fooBar: 'test', foo_bar: 'test' &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="escapeRegex-str"><a href="#escapeRegex-str" class="headerlink" title="escapeRegex(str)"></a>escapeRegex(str)</h3><p>Escapes special characters in a regular expression.</p>
+<h3 id="escapeDiacritic-str"><a href="#escapeDiacritic-str" class="headerlink" title="escapeDiacritic(str)"></a>escapeDiacritic(str)</h3><p>Escapes diacritic characters in a string.</p>
+<h3 id="escapeHTML-str"><a href="#escapeHTML-str" class="headerlink" title="escapeHTML(str)"></a>escapeHTML(str)</h3><p>Escapes HTML entities in a string.</p>
+<h3 id="hash-str"><a href="#hash-str" class="headerlink" title="hash(str)"></a>hash(str)</h3><p>Generates SHA1 hash.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">hash(<span class="string">'123456'</span>);</span><br><span class="line"><span class="comment">// &lt;Buffer 7c 4a 8d 09 ca 37 62 af 61 e5 95 20 94 3d c2 64 94 f8 94 1b&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="HashStream"><a href="#HashStream" class="headerlink" title="HashStream()"></a>HashStream()</h3><p>Generates SHA1 hash with a transform stream.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> stream = <span class="keyword">new</span> HashStream();</span><br><span class="line"></span><br><span class="line">fs.createReadStream(<span class="string">'/path/to/file'</span>)</span><br><span class="line">  .pipe(stream)</span><br><span class="line">  .on(<span class="string">'finish'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(stream.read());</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="highlight-str-options"><a href="#highlight-str-options" class="headerlink" title="highlight(str, [options])"></a>highlight(str, [options])</h3><p>Syntax highlighting for a code block.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gutter</code></td>
+<td>Whether to show line numbers</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>wrap</code></td>
+<td>Whether to wrap the code block</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>firstLine</code></td>
+<td>First line number</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>hljs</code></td>
+<td>Whether to use the <code>hljs-*</code> prefix for CSS classes</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>lang</code></td>
+<td>Language</td>
+<td></td>
+</tr>
+<tr>
+<td><code>caption</code></td>
+<td>Caption</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tab</code></td>
+<td>Replace tabs</td>
+<td></td>
+</tr>
+<tr>
+<td><code>autoDetect</code></td>
+<td>Detect language automatically</td>
+<td>false</td>
+</tr>
+</tbody></table>
+<h3 id="htmlTag-tag-attrs-text"><a href="#htmlTag-tag-attrs-text" class="headerlink" title="htmlTag(tag, attrs, text)"></a>htmlTag(tag, attrs, text)</h3><p>Creates a html tag.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">htmlTag(<span class="string">'img'</span>, &#123;<span class="attr">src</span>: <span class="string">'example.png'</span>&#125;)</span><br><span class="line"><span class="comment">// &lt;img src="example.png"&gt;</span></span><br><span class="line"></span><br><span class="line">htmlTag(<span class="string">'a'</span>, &#123;<span class="attr">href</span>: <span class="string">'http://hexo.io/'</span>&#125;, <span class="string">'Hexo'</span>)</span><br><span class="line"><span class="comment">// &lt;a href="http://hexo.io/"&gt;Hexo&lt;/a&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Pattern-rule"><a href="#Pattern-rule" class="headerlink" title="Pattern(rule)"></a>Pattern(rule)</h3><p>Parses the string and tests if the string matches the rule. <code>rule</code> can be a string, a regular expression or a function.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="keyword">new</span> Pattern(<span class="string">'posts/:id'</span>);</span><br><span class="line"></span><br><span class="line">pattern.match(<span class="string">'posts/89'</span>);</span><br><span class="line"><span class="comment">// &#123;0: 'posts/89', 1: '89', id: '89'&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="keyword">new</span> Pattern(<span class="string">'posts/*path'</span>);</span><br><span class="line"></span><br><span class="line">pattern.match(<span class="string">'posts/2013/hello-world'</span>);</span><br><span class="line"><span class="comment">// &#123;0: 'posts/2013/hello-world', 1: '2013/hello-world', path: '2013/hello-world'&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Permalink-rule-options"><a href="#Permalink-rule-options" class="headerlink" title="Permalink(rule, [options])"></a>Permalink(rule, [options])</h3><p>Parses a permalink.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>segments</code></td>
+<td>Customize the rule of a segment in the permalink</td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> permalink = <span class="keyword">new</span> Permalink(<span class="string">':year/:month/:day/:title'</span>, &#123;</span><br><span class="line">  segments: &#123;</span><br><span class="line">    year: <span class="regexp">/(\d&#123;4&#125;)/</span>,</span><br><span class="line">    month: <span class="regexp">/(\d&#123;2&#125;)/</span>,</span><br><span class="line">    day: <span class="regexp">/(\d&#123;2&#125;)/</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">permalink.parse(<span class="string">'2014/01/31/test'</span>);</span><br><span class="line"><span class="comment">// &#123;year: '2014', month: '01', day: '31', title: 'test'&#125;</span></span><br><span class="line"></span><br><span class="line">permalink.test(<span class="string">'2014/01/31/test'</span>);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">permalink.stringify(&#123;<span class="attr">year</span>: <span class="string">'2014'</span>, <span class="attr">month</span>: <span class="string">'01'</span>, <span class="attr">day</span>: <span class="string">'31'</span>, <span class="attr">title</span>: <span class="string">'test'</span>&#125;)</span><br><span class="line"><span class="comment">// 2014/01/31/test</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="slugize-str-options"><a href="#slugize-str-options" class="headerlink" title="slugize(str, [options])"></a>slugize(str, [options])</h3><p>Transforms a string into a clean URL-friendly string.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>separator</code></td>
+<td>Separator</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>transform</code></td>
+<td>Transform the string into lower case (<code>1</code>) or upper case (<code>2</code>)</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">slugize(<span class="string">'Hello World'</span>) = <span class="string">'Hello-World'</span></span><br><span class="line">slugize(<span class="string">'Hellô Wòrld'</span>) = <span class="string">'Hello-World'</span></span><br><span class="line">slugize(<span class="string">'Hello World'</span>, &#123;<span class="attr">separator</span>: <span class="string">'_'</span>&#125;) = <span class="string">'Hello_World'</span></span><br><span class="line">slugize(<span class="string">'Hello World'</span>, &#123;<span class="attr">transform</span>: <span class="number">1</span>&#125;) = <span class="string">'hello-world'</span></span><br><span class="line">slugize(<span class="string">'Hello World'</span>, &#123;<span class="attr">transform</span>: <span class="number">2</span>&#125;) = <span class="string">'HELLO-WORLD'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="spawn-command-args-options"><a href="#spawn-command-args-options" class="headerlink" title="spawn(command, [args], [options])"></a>spawn(command, [args], [options])</h3><p>Launches a new process with the given <code>command</code>. This method returns a promise.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>cwd</code></td>
+<td>Current working directory of the child process</td>
+<td></td>
+</tr>
+<tr>
+<td><code>env</code></td>
+<td>Environment key-value pairs</td>
+<td></td>
+</tr>
+<tr>
+<td><code>stdio</code></td>
+<td>Child’s stdio configuration</td>
+<td></td>
+</tr>
+<tr>
+<td><code>detached</code></td>
+<td>The child will be a process group leader</td>
+<td></td>
+</tr>
+<tr>
+<td><code>uid</code></td>
+<td>Sets the user identity of the process</td>
+<td></td>
+</tr>
+<tr>
+<td><code>gid</code></td>
+<td>Sets the group identity of the process</td>
+<td></td>
+</tr>
+<tr>
+<td><code>verbose</code></td>
+<td>Display messages on the console</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>Sets the encoding of the output string</td>
+<td><code>utf8</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">spawn(<span class="string">'cat'</span>, <span class="string">'test.txt'</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">content</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(content);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="stripHTML-str"><a href="#stripHTML-str" class="headerlink" title="stripHTML(str)"></a>stripHTML(str)</h3><p>Removes HTML tags in a string.</p>
+<h3 id="wordWrap-str-options"><a href="#wordWrap-str-options" class="headerlink" title="wordWrap(str, [options])"></a>wordWrap(str, [options])</h3><p>Wraps the string no longer than line width. This method breaks on the first whitespace character that does not exceed line width.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>width</code></td>
+<td>Line width</td>
+<td>80</td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">wordWrap(<span class="string">'Once upon a time'</span>)</span><br><span class="line"><span class="comment">// Once upon a time</span></span><br><span class="line"></span><br><span class="line">wordWrap(<span class="string">'Once upon a time, in a kingdom called Far Far Away, a king fell ill, and finding a successor to the throne turned out to be more trouble than anyone could have imagined...'</span>)</span><br><span class="line"><span class="comment">// Once upon a time, in a kingdom called Far Far Away, a king fell ill, and finding\na successor to the throne turned out to be more trouble than anyone could have\nimagined...</span></span><br><span class="line"></span><br><span class="line">wordWrap(<span class="string">'Once upon a time'</span>, &#123;<span class="attr">width</span>: <span class="number">8</span>&#125;)</span><br><span class="line"><span class="comment">// Once\nupon a\ntime</span></span><br><span class="line"></span><br><span class="line">wordWrap(<span class="string">'Once upon a time'</span>, &#123;<span class="attr">width</span>: <span class="number">1</span>&#125;)</span><br><span class="line"><span class="comment">// Once\nupon\na\ntime</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="truncate-str-options"><a href="#truncate-str-options" class="headerlink" title="truncate(str, [options])"></a>truncate(str, [options])</h3><p>Truncates a given text after a given <code>length</code> if text is longer than <code>length</code>. The last characters will be replaced with the <code>omission</code> option for a total length not exceeding <code>length</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>length</code></td>
+<td>Max length of the string</td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>omission</code></td>
+<td>Omission text</td>
+<td>…</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>truncate text at a natural break</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">truncate(<span class="string">'Once upon a time in a world far far away'</span>)</span><br><span class="line"><span class="comment">// "Once upon a time in a world..."</span></span><br><span class="line"></span><br><span class="line">truncate(<span class="string">'Once upon a time in a world far far away'</span>, &#123;<span class="attr">length</span>: <span class="number">17</span>&#125;)</span><br><span class="line"><span class="comment">// "Once upon a ti..."</span></span><br><span class="line"></span><br><span class="line">truncate(<span class="string">'Once upon a time in a world far far away'</span>, &#123;<span class="attr">length</span>: <span class="number">17</span>, <span class="attr">separator</span>: <span class="string">' '</span>&#125;)</span><br><span class="line"><span class="comment">// "Once upon a..."</span></span><br><span class="line"></span><br><span class="line">truncate(<span class="string">'And they found that many people were sleeping better.'</span>, &#123;<span class="attr">length</span>: <span class="number">25</span>, <span class="attr">omission</span>: <span class="string">'... (continued)'</span>&#125;)</span><br><span class="line"><span class="comment">// "And they f... (continued)"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>MIT</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo-util</tag>
       </tags>
   </entry>
   <entry>
@@ -144,93 +1341,94 @@
       </tags>
   </entry>
   <entry>
-    <title>hahaxixihehe</title>
-    <url>/hahaxixihehe/</url>
-    <content><![CDATA[<p>kdjflskjdflkjsdlgk<br>sdgjskldgjlskdjgl<br>sdjglksjdlgkjsdl<br>djsklgjlskdjglk<br>sjdkgjslkdsldkgjl</p>
+    <title>hexo Marked</title>
+    <url>/hexo%20marked/</url>
+    <content><![CDATA[<a href="https://marked.js.org" target="_blank" rel="noopener">
+  <img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right">
+</a>
+
+<h1 id="Marked"><a href="#Marked" class="headerlink" title="Marked"></a>Marked</h1><p><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/v/marked" alt="npm"></a><br><a href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" target="_blank" rel="noopener"><img src="https://badgen.net/badgesize/gzip/https://cdn.jsdelivr.net/npm/marked/marked.min.js" alt="gzip size"></a><br><a href="https://packagephobia.now.sh/result?p=marked" target="_blank" rel="noopener"><img src="https://badgen.net/packagephobia/install/marked" alt="install size"></a><br><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/dt/marked" alt="downloads"></a><br><a href="https://david-dm.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/david/dep/markedjs/marked?label=deps" alt="dep"></a><br><a href="https://david-dm.org/markedjs/marked?type=dev" target="_blank" rel="noopener"><img src="https://badgen.net/david/dev/markedjs/marked?label=devDeps" alt="dev dep"></a><br><a href="https://travis-ci.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/travis/markedjs/marked" alt="travis"></a><br><a href="https://snyk.io/test/npm/marked" target="_blank" rel="noopener"><img src="https://snyk.io/test/npm/marked/badge.svg" alt="snyk"></a></p>
+<ul>
+<li>⚡ built for speed</li>
+<li>⬇️ low-level compiler for parsing markdown without caching or blocking for long periods of time</li>
+<li>⚖️ light-weight while implementing all markdown features from the supported flavors &amp; specifications</li>
+<li>🌐 works in a browser, on a server, or from a command line interface (CLI)</li>
+</ul>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Checkout the <a href="https://marked.js.org/demo/" target="_blank" rel="noopener">demo page</a> to see marked in action ⛹️</p>
+<h2 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h2><p>Our <a href="https://marked.js.org" target="_blank" rel="noopener">documentation pages</a> are also rendered using marked 💯</p>
+<p>Also read about:</p>
+<ul>
+<li><a href="https://marked.js.org/#/USING_ADVANCED.md" target="_blank" rel="noopener">Options</a></li>
+<li><a href="https://marked.js.org/#/USING_PRO.md" target="_blank" rel="noopener">Extensibility</a></li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p><strong>CLI:</strong> <code>npm install -g marked</code></p>
+<p><strong>In-browser:</strong> <code>npm install marked</code></p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨"><a href="#Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨" class="headerlink" title="Warning: 🚨 Marked does not sanitize the output HTML by default 🚨"></a>Warning: 🚨 Marked does not <a href="https://marked.js.org/#/USING_ADVANCED.md#options" target="_blank" rel="noopener">sanitize</a> the output HTML by default 🚨</h3><p><strong>CLI</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ marked -o hello.html</span><br><span class="line">hello world</span><br><span class="line">^D</span><br><span class="line">$ cat hello.html</span><br><span class="line">&lt;p&gt;hello world&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Browser</strong></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Marked in the browser<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/marked/marked.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>).innerHTML =</span></span><br><span class="line"><span class="actionscript">      marked(<span class="string">'# Marked in the browser\n\nRendered by **marked**.'</span>);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Copyright (c) 2011-2018, Christopher Jeffrey. (MIT License)</p>
 ]]></content>
       <categories>
-        <category>yaya</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>xixi</tag>
+        <tag>Marked</tag>
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+    <title>hexo markdown</title>
+    <url>/hexo%20markdown/</url>
+    <content><![CDATA[<h1 id="markdown-js"><a href="#markdown-js" class="headerlink" title="markdown-js"></a>markdown-js</h1><p>Yet another markdown parser, this time for JavaScript. There’s a few<br>options that precede this project but they all treat markdown to HTML<br>conversion as a single step process. You pass markdown in and get HTML<br>out, end of story. We had some pretty particular views on how the<br>process should actually look, which include:</p>
+<ul>
+<li><p>producing well-formed HTML. This means that <code>em</code> and <code>strong</code> nesting<br>is important, as is the ability to output as both HTML and XHTML</p>
+</li>
+<li><p>having an intermediate representation to allow processing of parsed<br>data (we in fact have two, both <a href="http://jsonml.org/" title="JSON Markup Language" target="_blank" rel="noopener">JsonML</a>: a markdown tree and an HTML tree)</p>
+</li>
+<li><p>being easily extensible to add new dialects without having to<br>rewrite the entire parsing mechanics</p>
+</li>
+<li><p>having a good test suite. The only test suites we could find tested<br>massive blocks of input, and passing depended on outputting the HTML<br>with exactly the same whitespace as the original implementation</p>
+</li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Just the <code>markdown</code> library:</p>
+<pre><code>npm install markdown</code></pre><p>Optionally, install <code>md2html</code> into your path</p>
+<pre><code>npm install -g markdown</code></pre><h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>The simple way to use it with node is:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown;</span><br><span class="line"><span class="built_in">console</span>.log( markdown.toHTML( <span class="string">"Hello *World*!"</span> ) );</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h3><p>It also works in a browser; here is a complete example:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">id</span>=<span class="string">"text-input"</span> <span class="attr">oninput</span>=<span class="string">"this.editor.update()"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">rows</span>=<span class="string">"6"</span> <span class="attr">cols</span>=<span class="string">"60"</span>&gt;</span>Type **Markdown** here.<span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"preview"</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"lib/markdown.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">      <span class="function"><span class="keyword">function</span> <span class="title">Editor</span><span class="params">(input, preview)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">          preview.innerHTML = markdown.toHTML(input.value);</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="actionscript">        input.editor = <span class="keyword">this</span>;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update();</span></span><br><span class="line">      &#125;</span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> $ = <span class="function"><span class="keyword">function</span> (<span class="params">id</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">document</span>.getElementById(id); &#125;;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">new</span> Editor($(<span class="string">"text-input"</span>), $(<span class="string">"preview"</span>));</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="Command-line"><a href="#Command-line" class="headerlink" title="Command line"></a>Command line</h3><p>Assuming you’ve installed the <code>md2html</code> script (see Installation,<br>above), you can convert markdown to html:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># read from a file</span></span><br><span class="line">md2html /path/to/doc.md &gt; /path/to/doc.html</span><br><span class="line"></span><br><span class="line"><span class="comment"># or from stdin</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Hello *World*!'</span> | md2html</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="More-options"><a href="#More-options" class="headerlink" title="More options"></a>More options</h3><p>If you want more control check out the documentation in<br><a href="http://github.com/evilstreak/markdown-js/blob/master/lib/markdown.js" target="_blank" rel="noopener">lib/markdown.js</a> which details all the methods and parameters<br>available (including examples!). One day we’ll get the docs generated<br>and hosted somewhere for nicer browsing.</p>
+<p>Meanwhile, here’s an example of using the multi-step processing to<br>make wiki-style linking work by filling in missing link references:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> md = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown,</span><br><span class="line">    text = <span class="string">"[Markdown] is a simple text-based [markup language]\n"</span> +</span><br><span class="line">           <span class="string">"created by [John Gruber]\n\n"</span> +</span><br><span class="line">           <span class="string">"[John Gruber]: http://daringfireball.net"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// parse the markdown into a tree and grab the link references</span></span><br><span class="line"><span class="keyword">var</span> tree = md.parse( text ),</span><br><span class="line">    refs = tree[ <span class="number">1</span> ].references;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iterate through the tree finding link references</span></span><br><span class="line">( <span class="function"><span class="keyword">function</span> <span class="title">find_link_refs</span>(<span class="params"> jsonml </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( jsonml[ <span class="number">0</span> ] === <span class="string">"link_ref"</span> ) &#123;</span><br><span class="line">    <span class="keyword">var</span> ref = jsonml[ <span class="number">1</span> ].ref;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if there's no reference, define a wiki link</span></span><br><span class="line">    <span class="keyword">if</span> ( !refs[ ref ] ) &#123;</span><br><span class="line">      refs[ ref ] = &#123;</span><br><span class="line">        href: <span class="string">"http://en.wikipedia.org/wiki/"</span> + ref.replace(<span class="regexp">/\s+/</span>, <span class="string">"_"</span> )</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">1</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">1</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">2</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">2</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">&#125; )( tree );</span><br><span class="line"></span><br><span class="line"><span class="comment">// convert the tree into html</span></span><br><span class="line"><span class="keyword">var</span> html = md.renderJsonML( md.toHTMLTree( tree ) );</span><br><span class="line"><span class="built_in">console</span>.log( html );</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Hello World222222222222</title>
-    <url>/hello-world222/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start2222222"><a href="#Quick-Start2222222" class="headerlink" title="Quick Start2222222"></a>Quick Start2222222</h2><h3 id="Create-a-new-post222222222"><a href="#Create-a-new-post222222222" class="headerlink" title="Create a new post222222222"></a>Create a new post222222222</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server222222222"><a href="#Run-server222222222" class="headerlink" title="Run server222222222"></a>Run server222222222</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files222222222"><a href="#Generate-static-files222222222" class="headerlink" title="Generate static files222222222"></a>Generate static files222222222</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites22222222222"><a href="#Deploy-to-remote-sites22222222222" class="headerlink" title="Deploy to remote sites22222222222"></a>Deploy to remote sites22222222222</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>categories</title>
-    <url>/categories-1/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>嘻嘻</category>
-      </categories>
-      <tags>
-        <tag>哈哈</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo3.9.0+next6.5.0个人博客</title>
-    <url>/haha/</url>
-    <content><![CDATA[<p>3.9.0+next6.5.0个人博客</p>
-<p>##################################</p>
-<p>基线环境准备：（本文基于环境，版本不一致配置会有变化）</p>
-<p>hexo 3.9.0 + node v12.14.0 +next 6.5.0  （next 7.4.0以上版本就必须要hexo 4.X才支持了！）</p>
-<p>###################################</p>
-<p><a href="https://github.com/sgalin/hexo-starter" target="_blank" rel="noopener">https://github.com/sgalin/hexo-starter</a>    hexo 3.9.0版本的相关文件的GitHub地址，这个模板要保存下来啊 太坑了！！！<br>下载下来之后 ，该目录没有hexo，清理缓存之后重新从package.json中安装依赖</p>
-<p>这是一个测试的url<a href="https://mr-jieyan.github.io">JieYan blogs</a></p>
-<p>这是一个强调符号修改配置文件<code>/etc/resolve.conf</code>  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ni shi yige <span class="string">"代码块"</span>   </span><br><span class="line">java -jar <span class="string">"service.jar"</span></span><br></pre></td></tr></table></figure>
-
-<p>前面这部分就是摘要了。</p>
-<a id="more"></a>
-
-<p>这是一个七牛云图片<img src="http://q3gm2b4jl.bkt.clouddn.com/png/1.png" alt="jenkns"></p>
-<p><del>hahaxixi</del></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">DIR=`dirname <span class="variable">$0</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate blog</span></span><br><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">sleep 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Deploy</span></span><br><span class="line">hexo deploy</span><br><span class="line">sleep 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Push hexo code</span></span><br><span class="line">git add .</span><br><span class="line">current_date=`date <span class="string">"+%Y-%m-%d %H:%M:%S"</span>`</span><br><span class="line">git commit -m <span class="string">"Blog updated: <span class="variable">$current_date</span>"</span></span><br><span class="line"></span><br><span class="line">sleep 2</span><br><span class="line">git push </span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"=====&gt;Finish!&lt;====="</span></span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line">print(<span class="string">"Hello, World!"</span>);</span><br></pre></td></tr></table></figure>
-
+<h2 id="Intermediate-Representation"><a href="#Intermediate-Representation" class="headerlink" title="Intermediate Representation"></a>Intermediate Representation</h2><p>Internally the process to convert a chunk of markdown into a chunk of<br>HTML has three steps:</p>
+<ol>
+<li><p>Parse the markdown into a JsonML tree. Any references found in the<br>parsing are stored in the attribute hash of the root node under the<br>key <code>references</code>.</p>
+</li>
+<li><p>Convert the markdown tree into an HTML tree. Rename any nodes that<br>need it (<code>bulletlist</code> to <code>ul</code> for example) and lookup any references<br>used by links or images. Remove the references attribute once done.</p>
+</li>
+<li><p>Stringify the HTML tree being careful not to wreck whitespace where<br>whitespace is important (surrounding inline elements for example).</p>
+</li>
+</ol>
+<p>Each step of this process can be called individually if you need to do<br>some processing or modification of the data at an intermediate stage.<br>For example, you may want to grab a list of all URLs linked to in the<br>document before rendering it to HTML which you could do by recursing<br>through the HTML tree looking for <code>a</code> nodes.</p>
+<h2 id="Running-tests"><a href="#Running-tests" class="headerlink" title="Running tests"></a>Running tests</h2><p>To run the tests under node you will need tap installed (it’s listed as a<br><code>devDependencies</code> so <code>npm install</code> from the checkout should be enough), then do</p>
+<pre><code>$ npm test</code></pre><h2 id="Contributing"><a href="#Contributing" class="headerlink" title="Contributing"></a>Contributing</h2><p>Do the usual github fork and pull request dance. Add yourself to the<br>contributors section of <a href="/package.json">package.json</a> too if you want to.</p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Released under the MIT license.</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of<br>this software and associated documentation files (the “Software”), to deal in<br>the Software without restriction, including without limitation the rights to<br>use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of<br>the Software, and to permit persons to whom the Software is furnished to do so,<br>subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all<br>copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS<br>FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR<br>COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER<br>IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN<br>CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 ]]></content>
       <categories>
-        <category>yaya</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>xixi</tag>
+        <tag>markdown</tag>
       </tags>
   </entry>
 </search>
