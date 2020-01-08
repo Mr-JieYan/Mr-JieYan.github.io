@@ -19,6 +19,48 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Yearning数据库审计平台</title>
+    <url>/Yearning%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%A1%E8%AE%A1%E5%B9%B3%E5%8F%B0/</url>
+    <content><![CDATA[<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><strong>部分开发有上正式库查询数据排查问题的需求，正式环境的数据库不太适合透露外网端口提供给开发用图形工具进行访问，用openvpn连到内网再用图形工具进行访问的话，又会导致vpn的证书管理困难（虽然vpn访问内网也做了安全组限制）开放了太多的权限给开发，造成安全隐患，所以打算采用Yearning数据库审计平台+ip白名单的方式解决此问题。</strong></p>
+<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>Yearning 不依赖于任何第三方SQL审核工具作为审核引擎,内部已自己实现审核/回滚相关逻辑。<br>仅依赖Mysql数据库。<br><code>mysql版本必须5.7及以上版本</code>请事先自行安装完毕且<code>创建Yearning库,字符集应为UTF-8/UTF8mb4 (仅Yearning所需mysql版本)</code><br>Yearning日志仅输出error级别,没有日志即可认为无运行错误！<br>Yearning 基于1080p分辨率开发仅支持1080p及以上显示器访问<br>由于使用较多新的前端技术栈,请使用Chrome最新版本(不包括360等其他魔改版本)</p>
+<h4 id="安装msyql"><a href="#安装msyql" class="headerlink" title="安装msyql"></a>安装msyql</h4><ol>
+<li><p>下载yum源安装<br><code>wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</code><br><code>yum -y install mysql80-community-release-el7-3.noarch.rpm</code></p>
+</li>
+<li><p>启动对应版本的源，此处注释掉mysql8<br><code>vim /etc/yum.repos.d/mysql-community.repo</code><br><code>yum repolist all | grep mysql</code><br><code>yum install mysql-community-server</code></p>
+</li>
+<li><p>修改一下mysql的data目录<br><code>vim /etc/my.cnf</code><br> <code>datadir=/data/mysql</code><br><code>systemctl start mysqld</code></p>
+</li>
+<li><p>查看密码<br><code>grep -i password /var/log/mysqld.log</code></p>
+</li>
+<li><p>修改密码<br><code>mysql -uroot -p &#39;pass&#39;</code><br><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;pass&#39;;</code></p>
+</li>
+<li><p>在初始化之前要先创建Yearning库,字符集应为UTF-8/UTF8mb4<br><code>CREATE DATABASE  Yearning DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></p>
+</li>
+</ol>
+<h4 id="Yearning下载安装"><a href="#Yearning下载安装" class="headerlink" title="Yearning下载安装"></a>Yearning下载安装</h4><p><a href="https://guide.yearning.io/install.html" target="_blank" rel="noopener">官方参考文档</a>  </p>
+<p>Yearning-go提供二进制下载包<br>下载地址 <a href="https://github.com/cookieY/Yearning/releases" target="_blank" rel="noopener">https://github.com/cookieY/Yearning/releases</a><br>请选择最新版本 在Assets中选择 Yearning-x.x.x.linux-amd64.zip 包进行下载<br>如需进行代码修改或自己编译请移步至二次开发页面</p>
+<h4 id="Yearning-目录结构"><a href="#Yearning-目录结构" class="headerlink" title="Yearning 目录结构"></a>Yearning 目录结构</h4><p><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366699573.jpg" alt></p>
+<h4 id="1-填写配置文件"><a href="#1-填写配置文件" class="headerlink" title="1.填写配置文件"></a>1.填写配置文件</h4><p><code>cat conf.toml</code></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[Mysql]</span></span><br><span class="line"><span class="string">Db</span> <span class="string">=</span> <span class="string">"Yearning"</span></span><br><span class="line"><span class="string">Host</span> <span class="string">=</span> <span class="string">"127.0.0.1"</span></span><br><span class="line"><span class="string">Port</span> <span class="string">=</span> <span class="string">"3306"</span></span><br><span class="line"><span class="string">Password</span> <span class="string">=</span> <span class="string">"xxxx"</span></span><br><span class="line"><span class="string">User</span> <span class="string">=</span> <span class="string">"root"</span></span><br><span class="line"></span><br><span class="line"><span class="string">[General]</span>   <span class="comment">#数据库加解密key，只可更改一次。</span></span><br><span class="line"><span class="string">SecretKey</span> <span class="string">=</span> <span class="string">"dbcjqheupqjsuwsm"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="关于SecretKey"><a href="#关于SecretKey" class="headerlink" title="关于SecretKey"></a>关于SecretKey</h4><p>SecretKey是token/数据库密码加密/解密的salt。<br>建议所有用户在初次安装Yearning之前将SecretKey更改(不更改将存在安全风险)<br>格式: 大小写字母均可, 长度必须为16位<br>特别注意:<br>此key仅可在初次安装时更改!之后不可再次更改!如再次更改会导致之前已存放的数据源密码无法解密,最终导致无法获取相关数据源信息  </p>
+<h4 id="使用帮助"><a href="#使用帮助" class="headerlink" title="使用帮助"></a>使用帮助</h4><p><code>./Yearning -h</code><br><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366990306.jpg" alt></p>
+<h4 id="2-初始化数据结构"><a href="#2-初始化数据结构" class="headerlink" title="2.初始化数据结构"></a>2.初始化数据结构</h4><p><code>./Yearning -m</code><br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning3.png" alt><br><code>如果报错无法连接数据库，本地测试能连接，请检查Yearning库有没有创建</code><br>请务必在-s启动前首先执行-m 初始化操作！<br>如要再次初始化，请先把yearning表删除，否则重复执行无效</p>
+<h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3.启动服务"></a>3.启动服务</h4><blockquote>
+<p>默认启动<br><code>./Yearning -s</code><br>参数启动<br><code>./Yearning -s -b &quot;192.168.1.100&quot; -p &quot;8000&quot;</code><br>打开浏览器 <a href="http://192.168.1.100:8000" target="_blank" rel="noopener">http://192.168.1.100:8000</a><br>默认密码：admin/Yearning_admin</p>
+</blockquote>
+<h4 id="服务更新"><a href="#服务更新" class="headerlink" title="服务更新"></a>服务更新</h4><p>Yearning采用自动表结构同步 无需手动更新表结构。只需替换安装包即可<br>但如遇 删除字段操作的变动需要执行以下命令。具体是否需要做此操作，请详见相应版本的更新公告(目前该情况只出现于2.1.0以下版本升级到2.1.0以上版本)</p>
+<h4 id="Yearning-接入LDAP"><a href="#Yearning-接入LDAP" class="headerlink" title="Yearning 接入LDAP"></a>Yearning 接入LDAP</h4><p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning1.png" alt></p>
+<p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning2.png" alt></p>
+]]></content>
+      <categories>
+        <category>DBA</category>
+      </categories>
+      <tags>
+        <tag>Yearning</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CICD之Jenkins相关</title>
     <url>/CICD%E4%B9%8BJenkins%E7%9B%B8%E5%85%B3/</url>
     <content><![CDATA[<h4 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h4><h4 id="Jenkins相关配置"><a href="#Jenkins相关配置" class="headerlink" title="Jenkins相关配置"></a>Jenkins相关配置</h4><ul>
@@ -73,45 +115,56 @@
       </tags>
   </entry>
   <entry>
-    <title>Yearning数据库审计平台</title>
-    <url>/Yearning%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%A1%E8%AE%A1%E5%B9%B3%E5%8F%B0/</url>
-    <content><![CDATA[<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><strong>部分开发有上正式库查询数据排查问题的需求，正式环境的数据库不太适合透露外网端口提供给开发用图形工具进行访问，用openvpn连到内网再用图形工具进行访问的话，又会导致vpn的证书管理困难（虽然vpn访问内网也做了安全组限制）开放了太多的权限给开发，造成安全隐患，所以打算采用Yearning数据库审计平台+ip白名单的方式解决此问题。</strong></p>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>Yearning 不依赖于任何第三方SQL审核工具作为审核引擎,内部已自己实现审核/回滚相关逻辑。<br>仅依赖Mysql数据库。<br><code>mysql版本必须5.7及以上版本</code>请事先自行安装完毕且<code>创建Yearning库,字符集应为UTF-8/UTF8mb4 (仅Yearning所需mysql版本)</code><br>Yearning日志仅输出error级别,没有日志即可认为无运行错误！<br>Yearning 基于1080p分辨率开发仅支持1080p及以上显示器访问<br>由于使用较多新的前端技术栈,请使用Chrome最新版本(不包括360等其他魔改版本)</p>
-<h4 id="安装msyql"><a href="#安装msyql" class="headerlink" title="安装msyql"></a>安装msyql</h4><ol>
-<li><p>下载yum源安装<br><code>wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm</code><br><code>yum -y install mysql80-community-release-el7-3.noarch.rpm</code></p>
+    <title>hexo markdown</title>
+    <url>/hexo%20markdown/</url>
+    <content><![CDATA[<h1 id="markdown-js"><a href="#markdown-js" class="headerlink" title="markdown-js"></a>markdown-js</h1><p>Yet another markdown parser, this time for JavaScript. There’s a few<br>options that precede this project but they all treat markdown to HTML<br>conversion as a single step process. You pass markdown in and get HTML<br>out, end of story. We had some pretty particular views on how the<br>process should actually look, which include:</p>
+<ul>
+<li><p>producing well-formed HTML. This means that <code>em</code> and <code>strong</code> nesting<br>is important, as is the ability to output as both HTML and XHTML</p>
 </li>
-<li><p>启动对应版本的源，此处注释掉mysql8<br><code>vim /etc/yum.repos.d/mysql-community.repo</code><br><code>yum repolist all | grep mysql</code><br><code>yum install mysql-community-server</code></p>
+<li><p>having an intermediate representation to allow processing of parsed<br>data (we in fact have two, both <a href="http://jsonml.org/" title="JSON Markup Language" target="_blank" rel="noopener">JsonML</a>: a markdown tree and an HTML tree)</p>
 </li>
-<li><p>修改一下mysql的data目录<br><code>vim /etc/my.cnf</code><br> <code>datadir=/data/mysql</code><br><code>systemctl start mysqld</code></p>
+<li><p>being easily extensible to add new dialects without having to<br>rewrite the entire parsing mechanics</p>
 </li>
-<li><p>查看密码<br><code>grep -i password /var/log/mysqld.log</code></p>
+<li><p>having a good test suite. The only test suites we could find tested<br>massive blocks of input, and passing depended on outputting the HTML<br>with exactly the same whitespace as the original implementation</p>
 </li>
-<li><p>修改密码<br><code>mysql -uroot -p &#39;pass&#39;</code><br><code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;pass&#39;;</code></p>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Just the <code>markdown</code> library:</p>
+<pre><code>npm install markdown</code></pre><p>Optionally, install <code>md2html</code> into your path</p>
+<pre><code>npm install -g markdown</code></pre><h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>The simple way to use it with node is:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown;</span><br><span class="line"><span class="built_in">console</span>.log( markdown.toHTML( <span class="string">"Hello *World*!"</span> ) );</span><br></pre></td></tr></table></figure>
+
+<h3 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h3><p>It also works in a browser; here is a complete example:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">id</span>=<span class="string">"text-input"</span> <span class="attr">oninput</span>=<span class="string">"this.editor.update()"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">rows</span>=<span class="string">"6"</span> <span class="attr">cols</span>=<span class="string">"60"</span>&gt;</span>Type **Markdown** here.<span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"preview"</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"lib/markdown.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">      <span class="function"><span class="keyword">function</span> <span class="title">Editor</span><span class="params">(input, preview)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">          preview.innerHTML = markdown.toHTML(input.value);</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="actionscript">        input.editor = <span class="keyword">this</span>;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update();</span></span><br><span class="line">      &#125;</span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> $ = <span class="function"><span class="keyword">function</span> (<span class="params">id</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">document</span>.getElementById(id); &#125;;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">new</span> Editor($(<span class="string">"text-input"</span>), $(<span class="string">"preview"</span>));</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Command-line"><a href="#Command-line" class="headerlink" title="Command line"></a>Command line</h3><p>Assuming you’ve installed the <code>md2html</code> script (see Installation,<br>above), you can convert markdown to html:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># read from a file</span></span><br><span class="line">md2html /path/to/doc.md &gt; /path/to/doc.html</span><br><span class="line"></span><br><span class="line"><span class="comment"># or from stdin</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Hello *World*!'</span> | md2html</span><br></pre></td></tr></table></figure>
+
+<h3 id="More-options"><a href="#More-options" class="headerlink" title="More options"></a>More options</h3><p>If you want more control check out the documentation in<br><a href="http://github.com/evilstreak/markdown-js/blob/master/lib/markdown.js" target="_blank" rel="noopener">lib/markdown.js</a> which details all the methods and parameters<br>available (including examples!). One day we’ll get the docs generated<br>and hosted somewhere for nicer browsing.</p>
+<p>Meanwhile, here’s an example of using the multi-step processing to<br>make wiki-style linking work by filling in missing link references:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> md = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown,</span><br><span class="line">    text = <span class="string">"[Markdown] is a simple text-based [markup language]\n"</span> +</span><br><span class="line">           <span class="string">"created by [John Gruber]\n\n"</span> +</span><br><span class="line">           <span class="string">"[John Gruber]: http://daringfireball.net"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// parse the markdown into a tree and grab the link references</span></span><br><span class="line"><span class="keyword">var</span> tree = md.parse( text ),</span><br><span class="line">    refs = tree[ <span class="number">1</span> ].references;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iterate through the tree finding link references</span></span><br><span class="line">( <span class="function"><span class="keyword">function</span> <span class="title">find_link_refs</span>(<span class="params"> jsonml </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( jsonml[ <span class="number">0</span> ] === <span class="string">"link_ref"</span> ) &#123;</span><br><span class="line">    <span class="keyword">var</span> ref = jsonml[ <span class="number">1</span> ].ref;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if there's no reference, define a wiki link</span></span><br><span class="line">    <span class="keyword">if</span> ( !refs[ ref ] ) &#123;</span><br><span class="line">      refs[ ref ] = &#123;</span><br><span class="line">        href: <span class="string">"http://en.wikipedia.org/wiki/"</span> + ref.replace(<span class="regexp">/\s+/</span>, <span class="string">"_"</span> )</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">1</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">1</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">2</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">2</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">&#125; )( tree );</span><br><span class="line"></span><br><span class="line"><span class="comment">// convert the tree into html</span></span><br><span class="line"><span class="keyword">var</span> html = md.renderJsonML( md.toHTMLTree( tree ) );</span><br><span class="line"><span class="built_in">console</span>.log( html );</span><br></pre></td></tr></table></figure>
+
+<h2 id="Intermediate-Representation"><a href="#Intermediate-Representation" class="headerlink" title="Intermediate Representation"></a>Intermediate Representation</h2><p>Internally the process to convert a chunk of markdown into a chunk of<br>HTML has three steps:</p>
+<ol>
+<li><p>Parse the markdown into a JsonML tree. Any references found in the<br>parsing are stored in the attribute hash of the root node under the<br>key <code>references</code>.</p>
 </li>
-<li><p>在初始化之前要先创建Yearning库,字符集应为UTF-8/UTF8mb4<br><code>CREATE DATABASE  Yearning DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code></p>
+<li><p>Convert the markdown tree into an HTML tree. Rename any nodes that<br>need it (<code>bulletlist</code> to <code>ul</code> for example) and lookup any references<br>used by links or images. Remove the references attribute once done.</p>
+</li>
+<li><p>Stringify the HTML tree being careful not to wreck whitespace where<br>whitespace is important (surrounding inline elements for example).</p>
 </li>
 </ol>
-<h4 id="Yearning下载安装"><a href="#Yearning下载安装" class="headerlink" title="Yearning下载安装"></a>Yearning下载安装</h4><p><a href="https://guide.yearning.io/install.html" target="_blank" rel="noopener">官方参考文档</a>  </p>
-<p>Yearning-go提供二进制下载包<br>下载地址 <a href="https://github.com/cookieY/Yearning/releases" target="_blank" rel="noopener">https://github.com/cookieY/Yearning/releases</a><br>请选择最新版本 在Assets中选择 Yearning-x.x.x.linux-amd64.zip 包进行下载<br>如需进行代码修改或自己编译请移步至二次开发页面</p>
-<h4 id="Yearning-目录结构"><a href="#Yearning-目录结构" class="headerlink" title="Yearning 目录结构"></a>Yearning 目录结构</h4><p><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366699573.jpg" alt></p>
-<h4 id="1-填写配置文件"><a href="#1-填写配置文件" class="headerlink" title="1.填写配置文件"></a>1.填写配置文件</h4><p><code>cat conf.toml</code></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">[Mysql]</span></span><br><span class="line"><span class="string">Db</span> <span class="string">=</span> <span class="string">"Yearning"</span></span><br><span class="line"><span class="string">Host</span> <span class="string">=</span> <span class="string">"127.0.0.1"</span></span><br><span class="line"><span class="string">Port</span> <span class="string">=</span> <span class="string">"3306"</span></span><br><span class="line"><span class="string">Password</span> <span class="string">=</span> <span class="string">"xxxx"</span></span><br><span class="line"><span class="string">User</span> <span class="string">=</span> <span class="string">"root"</span></span><br><span class="line"></span><br><span class="line"><span class="string">[General]</span>   <span class="comment">#数据库加解密key，只可更改一次。</span></span><br><span class="line"><span class="string">SecretKey</span> <span class="string">=</span> <span class="string">"dbcjqheupqjsuwsm"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="关于SecretKey"><a href="#关于SecretKey" class="headerlink" title="关于SecretKey"></a>关于SecretKey</h4><p>SecretKey是token/数据库密码加密/解密的salt。<br>建议所有用户在初次安装Yearning之前将SecretKey更改(不更改将存在安全风险)<br>格式: 大小写字母均可, 长度必须为16位<br>特别注意:<br>此key仅可在初次安装时更改!之后不可再次更改!如再次更改会导致之前已存放的数据源密码无法解密,最终导致无法获取相关数据源信息  </p>
-<h4 id="使用帮助"><a href="#使用帮助" class="headerlink" title="使用帮助"></a>使用帮助</h4><p><code>./Yearning -h</code><br><img src="https://wuchen-1252812685.cos.ap-shanghai.myqcloud.com/img/yearning/15640366990306.jpg" alt></p>
-<h4 id="2-初始化数据结构"><a href="#2-初始化数据结构" class="headerlink" title="2.初始化数据结构"></a>2.初始化数据结构</h4><p><code>./Yearning -m</code><br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning3.png" alt><br><code>如果报错无法连接数据库，本地测试能连接，请检查Yearning库有没有创建</code><br>请务必在-s启动前首先执行-m 初始化操作！<br>如要再次初始化，请先把yearning表删除，否则重复执行无效</p>
-<h4 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3.启动服务"></a>3.启动服务</h4><blockquote>
-<p>默认启动<br><code>./Yearning -s</code><br>参数启动<br><code>./Yearning -s -b &quot;192.168.1.100&quot; -p &quot;8000&quot;</code><br>打开浏览器 <a href="http://192.168.1.100:8000" target="_blank" rel="noopener">http://192.168.1.100:8000</a><br>默认密码：admin/Yearning_admin</p>
-</blockquote>
-<h4 id="服务更新"><a href="#服务更新" class="headerlink" title="服务更新"></a>服务更新</h4><p>Yearning采用自动表结构同步 无需手动更新表结构。只需替换安装包即可<br>但如遇 删除字段操作的变动需要执行以下命令。具体是否需要做此操作，请详见相应版本的更新公告(目前该情况只出现于2.1.0以下版本升级到2.1.0以上版本)</p>
-<h4 id="Yearning-接入LDAP"><a href="#Yearning-接入LDAP" class="headerlink" title="Yearning 接入LDAP"></a>Yearning 接入LDAP</h4><p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning1.png" alt></p>
-<p><img src="http://q3gm2b4jl.bkt.clouddn.com/png/yearning2.png" alt></p>
+<p>Each step of this process can be called individually if you need to do<br>some processing or modification of the data at an intermediate stage.<br>For example, you may want to grab a list of all URLs linked to in the<br>document before rendering it to HTML which you could do by recursing<br>through the HTML tree looking for <code>a</code> nodes.</p>
+<h2 id="Running-tests"><a href="#Running-tests" class="headerlink" title="Running tests"></a>Running tests</h2><p>To run the tests under node you will need tap installed (it’s listed as a<br><code>devDependencies</code> so <code>npm install</code> from the checkout should be enough), then do</p>
+<pre><code>$ npm test</code></pre><h2 id="Contributing"><a href="#Contributing" class="headerlink" title="Contributing"></a>Contributing</h2><p>Do the usual github fork and pull request dance. Add yourself to the<br>contributors section of <a href="/package.json">package.json</a> too if you want to.</p>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Released under the MIT license.</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of<br>this software and associated documentation files (the “Software”), to deal in<br>the Software without restriction, including without limitation the rights to<br>use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of<br>the Software, and to permit persons to whom the Software is furnished to do so,<br>subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all<br>copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS<br>FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR<br>COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER<br>IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN<br>CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 ]]></content>
       <categories>
-        <category>DBA</category>
+        <category>hexo</category>
       </categories>
       <tags>
-        <tag>Yearning</tag>
+        <tag>markdown</tag>
       </tags>
   </entry>
   <entry>
@@ -1321,26 +1374,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Jenkins推荐任务配置</title>
-    <url>/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<h4 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h4><p>Jenkins安装部署非常简单，rpm包和war的方式都可以，网上教程很多，略过此步骤，目前我们生产环境部署在内网，war包方式，2.138.2版本，能满足目前使用需求，所以未作升级。</p>
-<h4 id="Jenkins相关配置"><a href="#Jenkins相关配置" class="headerlink" title="Jenkins相关配置"></a>Jenkins相关配置</h4><p>  之前项目采用的是插件+图形化配置的方式，比如自由风格的job，maven的job之类的，偶尔加一些参数化的配置，比如分支，tag，文本参数，设置Jenkins的环境变量等等，来增加任务配置的灵活性，经过不断的改造实践，最后发现一切由代码控制才是最佳实践，及采用Jenkins的pipeline方式配置任务—依赖基础插件：</p>
-<ul>
-<li>Pipeline（推荐）</li>
-<li>Pipeline: GitHub Groovy Libraries（拉取git的cicd代码进行部署） </li>
-</ul>
-<p>其他插件视你的pipeline脚本代码而定，比如我们生产环境采用了<code>Publish Over SSH</code>插件进行项目的部署。<br>此方式下，所有job配置都一样，方便进行任务的批量复制，只需要更换任务名即可，如下图：<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE.png" alt=" "><br>整体执行流程：<br>git上拉取CICD代码—-执行groovy脚本—–groovy脚本调用插件，读取参数，按步骤进行项目构建即可。<br>如果再考虑长远一点，比如<code>有迁移git的CICD代码或者切换CICD代码分支</code>的需求的话，<code>Repository URL, Branch Specifier, Script Path</code>都可以配置为全局的环境变量，到时候如果有变动只需要修改一次,找到系统管理—系统配置—全局属性—环境变量，按照kv的格式配置即可，注意<code>变量名最后不能有空格</code>，会找不到的，之前我被坑过。<br>CICD代码结构如下：<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins-cicd%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84.png" alt></p>
-<p>接下来就是所以的一切，都交给CICD的代码进行控制，调整，扩展等，所有任务的配置，除了任务名之外，都一致，而任务名恰好也控制着项目的一些关键的东西，如分支，环境，项目的jar包名，war包名等等，（CICD代码中对名字进行了截取判断）</p>
-<p>因为有用<code>Publish Over SSH</code>插件，所以还需要配置并测试<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins-pliush-ssh.png" alt></p>
-]]></content>
-      <categories>
-        <category>CICD</category>
-      </categories>
-      <tags>
-        <tag>jenkins</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo Marked</title>
     <url>/hexo%20marked/</url>
     <content><![CDATA[<a href="https://marked.js.org" target="_blank" rel="noopener">
@@ -1379,56 +1412,23 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo markdown</title>
-    <url>/hexo%20markdown/</url>
-    <content><![CDATA[<h1 id="markdown-js"><a href="#markdown-js" class="headerlink" title="markdown-js"></a>markdown-js</h1><p>Yet another markdown parser, this time for JavaScript. There’s a few<br>options that precede this project but they all treat markdown to HTML<br>conversion as a single step process. You pass markdown in and get HTML<br>out, end of story. We had some pretty particular views on how the<br>process should actually look, which include:</p>
+    <title>Jenkins推荐任务配置</title>
+    <url>/%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<h4 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h4><p>Jenkins安装部署非常简单，rpm包和war的方式都可以，网上教程很多，略过此步骤，目前我们生产环境部署在内网，war包方式，2.138.2版本，能满足目前使用需求，所以未作升级。</p>
+<h4 id="Jenkins相关配置"><a href="#Jenkins相关配置" class="headerlink" title="Jenkins相关配置"></a>Jenkins相关配置</h4><p>  之前项目采用的是插件+图形化配置的方式，比如自由风格的job，maven的job之类的，偶尔加一些参数化的配置，比如分支，tag，文本参数，设置Jenkins的环境变量等等，来增加任务配置的灵活性，经过不断的改造实践，最后发现一切由代码控制才是最佳实践，及采用Jenkins的pipeline方式配置任务—依赖基础插件：</p>
 <ul>
-<li><p>producing well-formed HTML. This means that <code>em</code> and <code>strong</code> nesting<br>is important, as is the ability to output as both HTML and XHTML</p>
-</li>
-<li><p>having an intermediate representation to allow processing of parsed<br>data (we in fact have two, both <a href="http://jsonml.org/" title="JSON Markup Language" target="_blank" rel="noopener">JsonML</a>: a markdown tree and an HTML tree)</p>
-</li>
-<li><p>being easily extensible to add new dialects without having to<br>rewrite the entire parsing mechanics</p>
-</li>
-<li><p>having a good test suite. The only test suites we could find tested<br>massive blocks of input, and passing depended on outputting the HTML<br>with exactly the same whitespace as the original implementation</p>
-</li>
+<li>Pipeline（推荐）</li>
+<li>Pipeline: GitHub Groovy Libraries（拉取git的cicd代码进行部署） </li>
 </ul>
-<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Just the <code>markdown</code> library:</p>
-<pre><code>npm install markdown</code></pre><p>Optionally, install <code>md2html</code> into your path</p>
-<pre><code>npm install -g markdown</code></pre><h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>The simple way to use it with node is:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown;</span><br><span class="line"><span class="built_in">console</span>.log( markdown.toHTML( <span class="string">"Hello *World*!"</span> ) );</span><br></pre></td></tr></table></figure>
-
-<h3 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h3><p>It also works in a browser; here is a complete example:</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">id</span>=<span class="string">"text-input"</span> <span class="attr">oninput</span>=<span class="string">"this.editor.update()"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">rows</span>=<span class="string">"6"</span> <span class="attr">cols</span>=<span class="string">"60"</span>&gt;</span>Type **Markdown** here.<span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"preview"</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"lib/markdown.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">      <span class="function"><span class="keyword">function</span> <span class="title">Editor</span><span class="params">(input, preview)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line">          preview.innerHTML = markdown.toHTML(input.value);</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="actionscript">        input.editor = <span class="keyword">this</span>;</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">this</span>.update();</span></span><br><span class="line">      &#125;</span><br><span class="line"><span class="javascript">      <span class="keyword">var</span> $ = <span class="function"><span class="keyword">function</span> (<span class="params">id</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">document</span>.getElementById(id); &#125;;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">new</span> Editor($(<span class="string">"text-input"</span>), $(<span class="string">"preview"</span>));</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Command-line"><a href="#Command-line" class="headerlink" title="Command line"></a>Command line</h3><p>Assuming you’ve installed the <code>md2html</code> script (see Installation,<br>above), you can convert markdown to html:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># read from a file</span></span><br><span class="line">md2html /path/to/doc.md &gt; /path/to/doc.html</span><br><span class="line"></span><br><span class="line"><span class="comment"># or from stdin</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Hello *World*!'</span> | md2html</span><br></pre></td></tr></table></figure>
-
-<h3 id="More-options"><a href="#More-options" class="headerlink" title="More options"></a>More options</h3><p>If you want more control check out the documentation in<br><a href="http://github.com/evilstreak/markdown-js/blob/master/lib/markdown.js" target="_blank" rel="noopener">lib/markdown.js</a> which details all the methods and parameters<br>available (including examples!). One day we’ll get the docs generated<br>and hosted somewhere for nicer browsing.</p>
-<p>Meanwhile, here’s an example of using the multi-step processing to<br>make wiki-style linking work by filling in missing link references:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> md = <span class="built_in">require</span>( <span class="string">"markdown"</span> ).markdown,</span><br><span class="line">    text = <span class="string">"[Markdown] is a simple text-based [markup language]\n"</span> +</span><br><span class="line">           <span class="string">"created by [John Gruber]\n\n"</span> +</span><br><span class="line">           <span class="string">"[John Gruber]: http://daringfireball.net"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// parse the markdown into a tree and grab the link references</span></span><br><span class="line"><span class="keyword">var</span> tree = md.parse( text ),</span><br><span class="line">    refs = tree[ <span class="number">1</span> ].references;</span><br><span class="line"></span><br><span class="line"><span class="comment">// iterate through the tree finding link references</span></span><br><span class="line">( <span class="function"><span class="keyword">function</span> <span class="title">find_link_refs</span>(<span class="params"> jsonml </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( jsonml[ <span class="number">0</span> ] === <span class="string">"link_ref"</span> ) &#123;</span><br><span class="line">    <span class="keyword">var</span> ref = jsonml[ <span class="number">1</span> ].ref;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if there's no reference, define a wiki link</span></span><br><span class="line">    <span class="keyword">if</span> ( !refs[ ref ] ) &#123;</span><br><span class="line">      refs[ ref ] = &#123;</span><br><span class="line">        href: <span class="string">"http://en.wikipedia.org/wiki/"</span> + ref.replace(<span class="regexp">/\s+/</span>, <span class="string">"_"</span> )</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">1</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">1</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">Array</span>.isArray( jsonml[ <span class="number">2</span> ] ) ) &#123;</span><br><span class="line">    jsonml[ <span class="number">2</span> ].forEach( find_link_refs );</span><br><span class="line">  &#125;</span><br><span class="line">&#125; )( tree );</span><br><span class="line"></span><br><span class="line"><span class="comment">// convert the tree into html</span></span><br><span class="line"><span class="keyword">var</span> html = md.renderJsonML( md.toHTMLTree( tree ) );</span><br><span class="line"><span class="built_in">console</span>.log( html );</span><br></pre></td></tr></table></figure>
-
-<h2 id="Intermediate-Representation"><a href="#Intermediate-Representation" class="headerlink" title="Intermediate Representation"></a>Intermediate Representation</h2><p>Internally the process to convert a chunk of markdown into a chunk of<br>HTML has three steps:</p>
-<ol>
-<li><p>Parse the markdown into a JsonML tree. Any references found in the<br>parsing are stored in the attribute hash of the root node under the<br>key <code>references</code>.</p>
-</li>
-<li><p>Convert the markdown tree into an HTML tree. Rename any nodes that<br>need it (<code>bulletlist</code> to <code>ul</code> for example) and lookup any references<br>used by links or images. Remove the references attribute once done.</p>
-</li>
-<li><p>Stringify the HTML tree being careful not to wreck whitespace where<br>whitespace is important (surrounding inline elements for example).</p>
-</li>
-</ol>
-<p>Each step of this process can be called individually if you need to do<br>some processing or modification of the data at an intermediate stage.<br>For example, you may want to grab a list of all URLs linked to in the<br>document before rendering it to HTML which you could do by recursing<br>through the HTML tree looking for <code>a</code> nodes.</p>
-<h2 id="Running-tests"><a href="#Running-tests" class="headerlink" title="Running tests"></a>Running tests</h2><p>To run the tests under node you will need tap installed (it’s listed as a<br><code>devDependencies</code> so <code>npm install</code> from the checkout should be enough), then do</p>
-<pre><code>$ npm test</code></pre><h2 id="Contributing"><a href="#Contributing" class="headerlink" title="Contributing"></a>Contributing</h2><p>Do the usual github fork and pull request dance. Add yourself to the<br>contributors section of <a href="/package.json">package.json</a> too if you want to.</p>
-<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Released under the MIT license.</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of<br>this software and associated documentation files (the “Software”), to deal in<br>the Software without restriction, including without limitation the rights to<br>use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of<br>the Software, and to permit persons to whom the Software is furnished to do so,<br>subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all<br>copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS<br>FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR<br>COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER<br>IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN<br>CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+<p>其他插件视你的pipeline脚本代码而定，比如我们生产环境采用了<code>Publish Over SSH</code>插件进行项目的部署。<br>此方式下，所有job配置都一样，方便进行任务的批量复制，只需要更换任务名即可，如下图：<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins%E4%BB%BB%E5%8A%A1%E9%85%8D%E7%BD%AE.png" alt=" "><br>整体执行流程：<br>git上拉取CICD代码—-执行groovy脚本—–groovy脚本调用插件，读取参数，按步骤进行项目构建即可。<br>如果再考虑长远一点，比如<code>有迁移git的CICD代码或者切换CICD代码分支</code>的需求的话，<code>Repository URL, Branch Specifier, Script Path</code>都可以配置为全局的环境变量，到时候如果有变动只需要修改一次,找到系统管理—系统配置—全局属性—环境变量，按照kv的格式配置即可，注意<code>变量名最后不能有空格</code>，会找不到的，之前我被坑过。<br>CICD代码结构如下：<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins-cicd%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84.png" alt></p>
+<p>接下来就是所以的一切，都交给CICD的代码进行控制，调整，扩展等，所有任务的配置，除了任务名之外，都一致，而任务名恰好也控制着项目的一些关键的东西，如分支，环境，项目的jar包名，war包名等等，（CICD代码中对名字进行了截取判断）</p>
+<p>因为有用<code>Publish Over SSH</code>插件，所以还需要配置并测试<br><img src="http://q3gm2b4jl.bkt.clouddn.com/png/Jenkins-pliush-ssh.png" alt></p>
 ]]></content>
       <categories>
-        <category>hexo</category>
+        <category>CICD</category>
       </categories>
       <tags>
-        <tag>markdown</tag>
+        <tag>jenkins</tag>
       </tags>
   </entry>
 </search>
