@@ -1149,6 +1149,44 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo Marked</title>
+    <url>/hexo%20marked/</url>
+    <content><![CDATA[<a href="https://marked.js.org" target="_blank" rel="noopener">
+  <img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right">
+</a>
+
+<h1 id="Marked"><a href="#Marked" class="headerlink" title="Marked"></a>Marked</h1><p><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/v/marked" alt="npm"></a><br><a href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" target="_blank" rel="noopener"><img src="https://badgen.net/badgesize/gzip/https://cdn.jsdelivr.net/npm/marked/marked.min.js" alt="gzip size"></a><br><a href="https://packagephobia.now.sh/result?p=marked" target="_blank" rel="noopener"><img src="https://badgen.net/packagephobia/install/marked" alt="install size"></a><br><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/dt/marked" alt="downloads"></a><br><a href="https://david-dm.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/david/dep/markedjs/marked?label=deps" alt="dep"></a><br><a href="https://david-dm.org/markedjs/marked?type=dev" target="_blank" rel="noopener"><img src="https://badgen.net/david/dev/markedjs/marked?label=devDeps" alt="dev dep"></a><br><a href="https://travis-ci.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/travis/markedjs/marked" alt="travis"></a><br><a href="https://snyk.io/test/npm/marked" target="_blank" rel="noopener"><img src="https://snyk.io/test/npm/marked/badge.svg" alt="snyk"></a></p>
+<ul>
+<li>⚡ built for speed</li>
+<li>⬇️ low-level compiler for parsing markdown without caching or blocking for long periods of time</li>
+<li>⚖️ light-weight while implementing all markdown features from the supported flavors &amp; specifications</li>
+<li>🌐 works in a browser, on a server, or from a command line interface (CLI)</li>
+</ul>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Checkout the <a href="https://marked.js.org/demo/" target="_blank" rel="noopener">demo page</a> to see marked in action ⛹️</p>
+<h2 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h2><p>Our <a href="https://marked.js.org" target="_blank" rel="noopener">documentation pages</a> are also rendered using marked 💯</p>
+<p>Also read about:</p>
+<ul>
+<li><a href="https://marked.js.org/#/USING_ADVANCED.md" target="_blank" rel="noopener">Options</a></li>
+<li><a href="https://marked.js.org/#/USING_PRO.md" target="_blank" rel="noopener">Extensibility</a></li>
+</ul>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p><strong>CLI:</strong> <code>npm install -g marked</code></p>
+<p><strong>In-browser:</strong> <code>npm install marked</code></p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨"><a href="#Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨" class="headerlink" title="Warning: 🚨 Marked does not sanitize the output HTML by default 🚨"></a>Warning: 🚨 Marked does not <a href="https://marked.js.org/#/USING_ADVANCED.md#options" target="_blank" rel="noopener">sanitize</a> the output HTML by default 🚨</h3><p><strong>CLI</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ marked -o hello.html</span><br><span class="line">hello world</span><br><span class="line">^D</span><br><span class="line">$ cat hello.html</span><br><span class="line">&lt;p&gt;hello world&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Browser</strong></p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Marked in the browser<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/marked/marked.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>).innerHTML =</span></span><br><span class="line"><span class="actionscript">      marked(<span class="string">'# Marked in the browser\n\nRendered by **marked**.'</span>);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Copyright (c) 2011-2018, Christopher Jeffrey. (MIT License)</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>Marked</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo util</title>
     <url>/hexo%20util/</url>
     <content><![CDATA[<h1 id="hexo-util"><a href="#hexo-util" class="headerlink" title="hexo-util"></a>hexo-util</h1><p><a href="https://travis-ci.org/hexojs/hexo-util" target="_blank" rel="noopener"><img src="https://travis-ci.org/hexojs/hexo-util.svg?branch=master" alt="Build Status"></a>  <a href="http://badge.fury.io/js/hexo-util" target="_blank" rel="noopener"><img src="https://badge.fury.io/js/hexo-util.svg" alt="NPM version"></a> <a href="https://coveralls.io/github/hexojs/hexo-util?branch=master" target="_blank" rel="noopener"><img src="https://coveralls.io/repos/hexojs/hexo-util/badge.svg?branch=master&service=github" alt="Coverage Status"></a></p>
@@ -1371,44 +1409,6 @@
       </categories>
       <tags>
         <tag>hexo-util</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo Marked</title>
-    <url>/hexo%20marked/</url>
-    <content><![CDATA[<a href="https://marked.js.org" target="_blank" rel="noopener">
-  <img width="60px" height="60px" src="https://marked.js.org/img/logo-black.svg" align="right">
-</a>
-
-<h1 id="Marked"><a href="#Marked" class="headerlink" title="Marked"></a>Marked</h1><p><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/v/marked" alt="npm"></a><br><a href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" target="_blank" rel="noopener"><img src="https://badgen.net/badgesize/gzip/https://cdn.jsdelivr.net/npm/marked/marked.min.js" alt="gzip size"></a><br><a href="https://packagephobia.now.sh/result?p=marked" target="_blank" rel="noopener"><img src="https://badgen.net/packagephobia/install/marked" alt="install size"></a><br><a href="https://www.npmjs.com/package/marked" target="_blank" rel="noopener"><img src="https://badgen.net/npm/dt/marked" alt="downloads"></a><br><a href="https://david-dm.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/david/dep/markedjs/marked?label=deps" alt="dep"></a><br><a href="https://david-dm.org/markedjs/marked?type=dev" target="_blank" rel="noopener"><img src="https://badgen.net/david/dev/markedjs/marked?label=devDeps" alt="dev dep"></a><br><a href="https://travis-ci.org/markedjs/marked" target="_blank" rel="noopener"><img src="https://badgen.net/travis/markedjs/marked" alt="travis"></a><br><a href="https://snyk.io/test/npm/marked" target="_blank" rel="noopener"><img src="https://snyk.io/test/npm/marked/badge.svg" alt="snyk"></a></p>
-<ul>
-<li>⚡ built for speed</li>
-<li>⬇️ low-level compiler for parsing markdown without caching or blocking for long periods of time</li>
-<li>⚖️ light-weight while implementing all markdown features from the supported flavors &amp; specifications</li>
-<li>🌐 works in a browser, on a server, or from a command line interface (CLI)</li>
-</ul>
-<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>Checkout the <a href="https://marked.js.org/demo/" target="_blank" rel="noopener">demo page</a> to see marked in action ⛹️</p>
-<h2 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h2><p>Our <a href="https://marked.js.org" target="_blank" rel="noopener">documentation pages</a> are also rendered using marked 💯</p>
-<p>Also read about:</p>
-<ul>
-<li><a href="https://marked.js.org/#/USING_ADVANCED.md" target="_blank" rel="noopener">Options</a></li>
-<li><a href="https://marked.js.org/#/USING_PRO.md" target="_blank" rel="noopener">Extensibility</a></li>
-</ul>
-<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p><strong>CLI:</strong> <code>npm install -g marked</code></p>
-<p><strong>In-browser:</strong> <code>npm install marked</code></p>
-<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><h3 id="Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨"><a href="#Warning-🚨-Marked-does-not-sanitize-the-output-HTML-by-default-🚨" class="headerlink" title="Warning: 🚨 Marked does not sanitize the output HTML by default 🚨"></a>Warning: 🚨 Marked does not <a href="https://marked.js.org/#/USING_ADVANCED.md#options" target="_blank" rel="noopener">sanitize</a> the output HTML by default 🚨</h3><p><strong>CLI</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ marked -o hello.html</span><br><span class="line">hello world</span><br><span class="line">^D</span><br><span class="line">$ cat hello.html</span><br><span class="line">&lt;p&gt;hello world&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Browser</strong></p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Marked in the browser<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/marked/marked.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>).innerHTML =</span></span><br><span class="line"><span class="actionscript">      marked(<span class="string">'# Marked in the browser\n\nRendered by **marked**.'</span>);</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="License"><a href="#License" class="headerlink" title="License"></a>License</h2><p>Copyright (c) 2011-2018, Christopher Jeffrey. (MIT License)</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>Marked</tag>
       </tags>
   </entry>
   <entry>
